@@ -1,0 +1,174 @@
+.taxes-hero {
+  background: linear-gradient(180deg, var(--color-surface-soft) 0%, #fff 100%);
+  border-bottom: 1px solid var(--color-hairline);
+  padding: clamp(28px, 4vw, 44px) 0 clamp(36px, 5vw, 52px);
+}
+.taxes-hero__eyebrow {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-mint);
+  margin: 16px 0 12px;
+}
+.taxes-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4.5vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  color: var(--color-ink);
+  margin: 0;
+  max-width: 720px;
+}
+.taxes-hero__lead {
+  max-width: 660px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-body);
+  margin: 16px 0 0;
+}
+
+/* Сравнение */
+.tax-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.tax-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+}
+.tax-card__emoji {
+  font-size: 30px;
+}
+.tax-card__name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--color-ink);
+  margin: 10px 0 6px;
+}
+.tax-card__rate {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-navy);
+  background: var(--color-mint-soft);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-bottom: 18px;
+}
+.tax-card__label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-muted-soft);
+  margin-top: 6px;
+}
+.tax-card__text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-body);
+  margin: 6px 0 12px;
+}
+.tax-card__lists {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-hairline);
+}
+.tax-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tax-list li {
+  font-size: 13px;
+  line-height: 1.45;
+}
+.tax-list--pro li {
+  color: var(--color-success);
+}
+.tax-list--con {
+  margin-top: 8px;
+}
+.tax-list--con li {
+  color: var(--color-muted);
+}
+
+/* Калькулятор */
+.tax-calc {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--color-navy);
+  border: 1px solid var(--color-navy-soft);
+  border-radius: var(--radius-xl);
+  padding: clamp(24px, 4vw, 40px);
+}
+.tax-calc__fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.tax-calc__result {
+  display: flex;
+  gap: 28px;
+  margin: 22px 0;
+  padding: 22px 24px;
+  background: var(--color-navy-deep);
+  border: 1px solid var(--color-navy-soft);
+  border-radius: var(--radius-lg);
+  min-height: 80px;
+  align-items: center;
+}
+.tax-calc__metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tax-calc__value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: -0.5px;
+  color: var(--color-mint-bright);
+}
+.tax-calc__sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+}
+.tax-calc__hint {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+.tax-calc__disclaimer {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 20px;
+}
+.tax-calc__btn {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .tax-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .tax-calc__fields {
+    grid-template-columns: 1fr;
+  }
+  .tax-calc__result {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}

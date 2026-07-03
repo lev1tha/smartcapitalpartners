@@ -1,0 +1,252 @@
+[
+    {
+        "id": "task_7d335dd04b",
+        "title": "Снять reels про кофейню",
+        "description": "Видео для Instagram",
+        "assignee": "smm",
+        "dueDate": "",
+        "priority": "normal",
+        "status": "done",
+        "result": {
+            "text": "Переснял",
+            "link": "https:\/\/instagram.com\/reel\/xyz789"
+        },
+        "rejectionReason": "Переснять с лучшим светом",
+        "attachments": [],
+        "createdBy": "director",
+        "createdByName": "Элдос Маткеримов",
+        "createdByRole": "director",
+        "createdAt": "2026-06-17T10:48:41+00:00",
+        "updatedAt": "2026-06-17T10:48:41+00:00",
+        "history": [
+            {
+                "at": "2026-06-17T10:48:41+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "create",
+                "note": "Задача создана"
+            },
+            {
+                "at": "2026-06-17T10:48:41+00:00",
+                "by": "СММ-специалист",
+                "byRole": "smm",
+                "action": "start",
+                "note": "Взято в работу"
+            },
+            {
+                "at": "2026-06-17T10:48:41+00:00",
+                "by": "СММ-специалист",
+                "byRole": "smm",
+                "action": "submit",
+                "note": "Сдано на проверку · ссылка: https:\/\/instagram.com\/reel\/abc123"
+            },
+            {
+                "at": "2026-06-17T10:48:41+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "reject",
+                "note": "Отклонено: Переснять с лучшим светом"
+            },
+            {
+                "at": "2026-06-17T10:48:41+00:00",
+                "by": "СММ-специалист",
+                "byRole": "smm",
+                "action": "start",
+                "note": "Взято в работу"
+            },
+            {
+                "at": "2026-06-17T10:48:41+00:00",
+                "by": "СММ-специалист",
+                "byRole": "smm",
+                "action": "submit",
+                "note": "Сдано на проверку · ссылка: https:\/\/instagram.com\/reel\/xyz789"
+            },
+            {
+                "at": "2026-06-17T10:48:41+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "approve",
+                "note": "Задача принята"
+            }
+        ]
+    },
+    {
+        "id": "task_c8a60bf31f",
+        "title": "Сторис: кейс кофейни",
+        "description": "",
+        "assignee": "smm",
+        "dueDate": "",
+        "priority": "normal",
+        "status": "done",
+        "result": {
+            "text": "Опубликовано",
+            "link": "https:\/\/instagram.com\/p\/abc"
+        },
+        "rejectionReason": "",
+        "attachments": [],
+        "createdBy": "director",
+        "createdByName": "Элдос Маткеримов",
+        "createdByRole": "director",
+        "createdAt": "2026-06-17T10:36:53+00:00",
+        "updatedAt": "2026-06-17T10:36:53+00:00",
+        "history": [
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "create",
+                "note": "Задача создана"
+            },
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "СММ-специалист",
+                "byRole": "smm",
+                "action": "start",
+                "note": "Взято в работу"
+            },
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "СММ-специалист",
+                "byRole": "smm",
+                "action": "submit",
+                "note": "Сдано на проверку · ссылка: https:\/\/instagram.com\/p\/abc"
+            },
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "approve",
+                "note": "Задача принята"
+            }
+        ]
+    },
+    {
+        "id": "task_f8f719950a",
+        "title": "Карусель про налоги КР",
+        "description": "",
+        "assignee": "smm",
+        "dueDate": "",
+        "priority": "normal",
+        "status": "review",
+        "result": {
+            "text": "Готово",
+            "link": "https:\/\/instagram.com\/reel\/xyz"
+        },
+        "rejectionReason": "",
+        "attachments": [],
+        "createdBy": "director",
+        "createdByName": "Элдос Маткеримов",
+        "createdByRole": "director",
+        "createdAt": "2026-06-17T10:36:53+00:00",
+        "updatedAt": "2026-06-17T10:36:53+00:00",
+        "history": [
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "create",
+                "note": "Задача создана"
+            },
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "СММ-специалист",
+                "byRole": "smm",
+                "action": "start",
+                "note": "Взято в работу"
+            },
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "СММ-специалист",
+                "byRole": "smm",
+                "action": "submit",
+                "note": "Сдано на проверку · ссылка: https:\/\/instagram.com\/reel\/xyz"
+            }
+        ]
+    },
+    {
+        "id": "task_02c4230a4f",
+        "title": "Снять reels про франшизы",
+        "description": "",
+        "assignee": "smm",
+        "dueDate": "",
+        "priority": "normal",
+        "status": "done",
+        "result": {
+            "text": "",
+            "link": ""
+        },
+        "rejectionReason": "",
+        "attachments": [],
+        "createdBy": "director",
+        "createdByName": "Элдос Маткеримов",
+        "createdByRole": "director",
+        "createdAt": "2026-06-17T10:36:53+00:00",
+        "updatedAt": "2026-07-03T09:56:11+00:00",
+        "history": [
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "create",
+                "note": "Задача создана"
+            },
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "СММ-специалист",
+                "byRole": "smm",
+                "action": "start",
+                "note": "Взято в работу"
+            },
+            {
+                "at": "2026-07-03T09:56:10+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "submit",
+                "note": "Сдано на проверку"
+            },
+            {
+                "at": "2026-07-03T09:56:11+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "approve",
+                "note": "Задача принята"
+            }
+        ]
+    },
+    {
+        "id": "task_2f41c16aac",
+        "title": "Контент-план на июль",
+        "description": "",
+        "assignee": "smm",
+        "dueDate": "",
+        "priority": "normal",
+        "status": "in_progress",
+        "result": {
+            "text": "",
+            "link": ""
+        },
+        "rejectionReason": "",
+        "attachments": [],
+        "createdBy": "director",
+        "createdByName": "Элдос Маткеримов",
+        "createdByRole": "director",
+        "createdAt": "2026-06-17T10:36:53+00:00",
+        "updatedAt": "2026-06-17T10:38:25+00:00",
+        "history": [
+            {
+                "at": "2026-06-17T10:36:53+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "create",
+                "note": "Задача создана"
+            },
+            {
+                "at": "2026-06-17T10:38:25+00:00",
+                "by": "Элдос Маткеримов",
+                "byRole": "director",
+                "action": "start",
+                "note": "Взято в работу"
+            }
+        ]
+    }
+]

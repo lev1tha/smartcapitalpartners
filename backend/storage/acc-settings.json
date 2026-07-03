@@ -1,0 +1,21 @@
+{
+    "ecpValidUntil": "2026-07-01",
+    "links": {
+        "sti": {
+            "name": "СТИ",
+            "url": "https:\/\/cabinet.sti.gov.kg"
+        },
+        "esf": {
+            "name": "ЭСФ",
+            "url": "x"
+        },
+        "ettn": {
+            "name": "ЭТТН",
+            "url": "y"
+        },
+        "bank": {
+            "name": "Банк",
+            "url": ""
+        }
+    }
+}

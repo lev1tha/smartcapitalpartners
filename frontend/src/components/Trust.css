@@ -1,0 +1,156 @@
+/* Кейсы */
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.case-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+}
+.case-card__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.case-card__emoji {
+  font-size: 26px;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  background: var(--color-surface-soft);
+  border-radius: var(--radius-md);
+}
+.case-card__title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--color-ink);
+}
+.case-card__city {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+.case-card__result {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-body);
+  margin: 0 0 20px;
+  flex: 1;
+}
+.case-card__metric {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-hairline);
+}
+.case-card__metric-value {
+  font-family: var(--font-display);
+  font-size: 30px;
+  letter-spacing: -1px;
+  color: var(--color-mint);
+}
+.case-card__metric-label {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* Команда */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.team-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  padding: 30px 24px;
+}
+.team-card__emoji {
+  font-size: 40px;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  background: var(--color-mint-soft);
+  border-radius: var(--radius-pill);
+  margin-bottom: 16px;
+}
+.team-card__name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--color-ink);
+}
+.team-card__role {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-navy);
+  margin: 4px 0 8px;
+}
+.team-card__exp {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+/* Отзывы */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.review-card {
+  position: relative;
+  margin: 0;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px 24px;
+}
+.review-card__quote {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 0.5;
+  color: var(--color-mint);
+  display: block;
+  height: 28px;
+}
+.review-card__text {
+  margin: 0 0 18px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-body);
+}
+.review-card__author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.review-card__author strong {
+  font-size: 15px;
+  color: var(--color-ink);
+}
+.review-card__author span {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+@media (max-width: 900px) {
+  .cases-grid,
+  .team-grid,
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build
+frontend/dist/
+
+# Env
+.env
+.env.local
+
+# OS / editor
+.DS_Store
+*.log
+
+# Backend secrets
+backend/config.php

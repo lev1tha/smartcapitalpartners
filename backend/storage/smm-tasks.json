@@ -1,0 +1,46 @@
+[
+    {
+        "title": "Свести отчёт по охватам",
+        "period": "daily",
+        "category": "Аналитика",
+        "priority": "low",
+        "dueDate": "2026-06-17",
+        "id": "smm_7e39f996af",
+        "isCompleted": false,
+        "createdBy": "smm",
+        "createdAt": "2026-06-17T16:34:51+00:00"
+    },
+    {
+        "title": "Запустить таргет на тест",
+        "period": "daily",
+        "category": "Реклама",
+        "priority": "high",
+        "dueDate": "2026-06-17",
+        "id": "smm_90aecb5fd9",
+        "isCompleted": false,
+        "createdBy": "smm",
+        "createdAt": "2026-06-17T16:34:51+00:00"
+    },
+    {
+        "title": "Снять Reels про франшизы",
+        "period": "daily",
+        "category": "Контент",
+        "priority": "medium",
+        "dueDate": "2026-06-17",
+        "id": "smm_a8f65e62c7",
+        "isCompleted": false,
+        "createdBy": "smm",
+        "createdAt": "2026-06-17T16:34:50+00:00"
+    },
+    {
+        "title": "Мониторинг комментариев и ЛС",
+        "period": "daily",
+        "category": "Модерация",
+        "priority": "high",
+        "dueDate": "2026-06-17",
+        "id": "smm_2f17f34714",
+        "isCompleted": true,
+        "createdBy": "smm",
+        "createdAt": "2026-06-17T16:34:49+00:00"
+    }
+]

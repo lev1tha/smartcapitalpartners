@@ -1,0 +1,27 @@
+{
+    "links": {
+        "ads": {
+            "name": "Google Ads",
+            "url": "x"
+        },
+        "meta": {
+            "name": "Meta",
+            "url": "y"
+        },
+        "analytics": {
+            "name": "GA",
+            "url": "z"
+        },
+        "twogis": {
+            "name": "2GIS",
+            "url": ""
+        }
+    },
+    "funnel": {
+        "qualified": 30,
+        "consultation": 15,
+        "contract": 8,
+        "client": 5
+    },
+    "budgetPlan": 200000
+}

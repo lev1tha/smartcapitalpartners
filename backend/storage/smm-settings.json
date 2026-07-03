@@ -1,0 +1,28 @@
+{
+    "tools": {
+        "autopost": {
+            "url": "https:\/\/smmplanner.com",
+            "status": "Ближайший пост: 15:00"
+        },
+        "design": {
+            "url": "x"
+        },
+        "analytics": {
+            "url": "y"
+        }
+    },
+    "kpi": {
+        "reach": {
+            "current": 50000,
+            "target": 100000
+        },
+        "followers": {
+            "current": 200,
+            "target": 1000
+        },
+        "er": {
+            "current": 3,
+            "target": 5
+        }
+    }
+}

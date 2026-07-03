@@ -1,0 +1,68 @@
+[
+    {
+        "id": "acc_fe1a309700",
+        "title": "Налог с продаж",
+        "period": "monthly",
+        "reportingPeriod": "2026-05",
+        "deadline": "2026-06-25",
+        "status": "in_progress",
+        "receiptFile": "",
+        "createdBy": "Авто",
+        "createdAt": "2026-06-17T17:00:05+00:00"
+    },
+    {
+        "id": "acc_7e7330b228",
+        "title": "НДС (налог на добавленную стоимость)",
+        "period": "monthly",
+        "reportingPeriod": "2026-05",
+        "deadline": "2026-06-25",
+        "status": "not_started",
+        "receiptFile": "",
+        "createdBy": "Авто",
+        "createdAt": "2026-06-17T17:00:05+00:00"
+    },
+    {
+        "id": "acc_2251676388",
+        "title": "Подоходный налог + соцотчисления (наёмные сотрудники)",
+        "period": "monthly",
+        "reportingPeriod": "2026-05",
+        "deadline": "2026-06-20",
+        "status": "not_started",
+        "receiptFile": "",
+        "createdBy": "Авто",
+        "createdAt": "2026-06-17T17:00:05+00:00"
+    },
+    {
+        "title": "Оплата НДС и налога с продаж",
+        "period": "monthly",
+        "reportingPeriod": "2026-06",
+        "deadline": "2026-06-25",
+        "status": "not_started",
+        "id": "acc_8f9d069c67",
+        "receiptFile": "",
+        "createdBy": "Бухгалтер",
+        "createdAt": "2026-06-17T16:47:16+00:00"
+    },
+    {
+        "title": "Отчёт по подоходному и соцфонду",
+        "period": "monthly",
+        "reportingPeriod": "2026-06",
+        "deadline": "2026-06-20",
+        "status": "not_started",
+        "id": "acc_2690ffb55d",
+        "receiptFile": "",
+        "createdBy": "Бухгалтер",
+        "createdAt": "2026-06-17T16:47:15+00:00"
+    },
+    {
+        "title": "Сверка с банком за вчера",
+        "period": "monthly",
+        "reportingPeriod": "2026-06",
+        "deadline": "2026-06-18",
+        "status": "in_progress",
+        "id": "acc_eb646dcc0a",
+        "receiptFile": "",
+        "createdBy": "Бухгалтер",
+        "createdAt": "2026-06-17T16:47:15+00:00"
+    }
+]

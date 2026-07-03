@@ -1,0 +1,28 @@
+[
+    {
+        "accountId": "acc_default",
+        "date": "2026-06-20",
+        "type": "reels",
+        "title": "Reels: как открыть кофейню за 1 месяц",
+        "note": "",
+        "status": "idea",
+        "link": "",
+        "id": "post_0c8bef0089",
+        "createdBy": "Элдос Маткеримов",
+        "createdAt": "2026-06-17T10:50:07+00:00",
+        "updatedAt": "2026-06-17T16:16:05+00:00"
+    },
+    {
+        "accountId": "acc_44526393e5",
+        "date": "2026-06-18",
+        "type": "post",
+        "title": "Про киберзащиту",
+        "note": "ВСЕ ДОЛЖНО БЫТЬ АХ",
+        "status": "idea",
+        "link": "",
+        "id": "post_2b9ea13321",
+        "createdBy": "Элдос Маткеримов",
+        "createdAt": "2026-06-18T08:50:07+00:00",
+        "updatedAt": "2026-06-18T08:50:10+00:00"
+    }
+]
