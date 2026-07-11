@@ -30,7 +30,7 @@ export default function Tools() {
           <span className="section__eyebrow section__eyebrow--mint">
             Инструменты и цифры
           </span>
-          <h2 className="section__title">MF PRO — это практическая платформа</h2>
+          <h2 className="section__title">Smart Capital Partners — это практическая платформа</h2>
           <p className="section__sub section__sub--light">
             Не просто статьи, а рабочие финансовые инструменты прямо в браузере.
           </p>

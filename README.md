@@ -1,4 +1,4 @@
-# MFPro
+# SmartCapitalPartners
 
 Фуллстек-проект: **React + Vite** (фронтенд) и **PHP** (бэкенд API).
 Дизайн-система установлена через [getdesign](https://getdesign.md) (`add cal`, вдохновлена Cal.com) — см. [frontend/DESIGN.md](frontend/DESIGN.md).
@@ -6,7 +6,7 @@
 ## Структура
 
 ```
-MFPro/
+SmartCapitalPartners/
 ├── frontend/          # React + Vite + TypeScript
 │   ├── DESIGN.md      # дизайн-система (референс для UI)
 │   └── src/

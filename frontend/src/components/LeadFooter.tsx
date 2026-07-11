@@ -88,7 +88,10 @@ export default function LeadFooter() {
 
         <div className="footer__bottom">
           <div className="footer__brand">
-            MF<span>PRO</span>
+            <div className="footer__brand-mark">
+              <img src="/logo-emblem.svg" alt="" className="footer__emblem" />
+              Smart Capital Partners
+            </div>
             <p>Маркетинг и финансы для бизнеса в Кыргызстане.</p>
           </div>
 
@@ -122,7 +125,7 @@ export default function LeadFooter() {
         </div>
 
         <div className="footer__legal">
-          <span>ОсОО «MF PRO» · Бишкек, Кыргызстан</span>
+          <span>ОсОО «Smart Capital Partners» · Бишкек, Кыргызстан</span>
           <span>© 2026 Все права защищены</span>
         </div>
       </div>

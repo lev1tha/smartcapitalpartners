@@ -144,7 +144,7 @@ export const investments: Investment[] = [
 ]
 
 export const investmentSafeguards = [
-  'Проверка проекта (due diligence) от MF PRO',
+  'Проверка проекта (due diligence) от Smart Capital Partners',
   'Юридическое оформление сделки',
   'Прозрачная финансовая модель',
   'Договор с фиксированной долей',

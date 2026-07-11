@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MFPro;
+namespace SmartCapitalPartners;
 
 /**
  * Простое JSON-хранилище списков в backend/storage/.

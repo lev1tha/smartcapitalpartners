@@ -49,7 +49,7 @@ export const investmentBuckets: InvestmentBucket[] = [
   { id: 'high', label: 'от 1 млн сом', min: 1_000_000, max: Infinity },
 ]
 
-// Что MF PRO даёт при запуске любой модели (единый процесс услуги).
+// Что Smart Capital Partners даёт при запуске любой модели (единый процесс услуги).
 export const whatYouGet: string[] = [
   'Финансовая модель с расчётом окупаемости и точки безубыточности',
   'Готовый бизнес-план под требования банков и инвесторов',

@@ -10,7 +10,7 @@ const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: BRAND,
-  legalName: 'ОсОО «MF PRO»',
+  legalName: 'ОсОО «Smart Capital Partners»',
   url: SITE_URL,
   description:
     'Маркетинг и финансы для бизнеса в Кыргызстане: бизнес-планы, финмодели, франшизы, инвестиции и готовые бизнесы.',

@@ -76,7 +76,8 @@ export default function Header() {
     <header className="header" ref={ref}>
       <div className="container header__inner">
         <Link className="header__brand" to="/" onClick={closeAll}>
-          MF<span>PRO</span>
+          <img src="/logo-emblem.svg" className="header__emblem" alt="" width="32" height="32" />
+          Smart Capital Partners
         </Link>
 
         <button

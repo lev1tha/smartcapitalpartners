@@ -40,7 +40,7 @@ export default function Trust() {
         <div className="container">
           <div className="section__head">
             <span className="section__eyebrow">Команда</span>
-            <h2 className="section__title">Эксперты MF PRO</h2>
+            <h2 className="section__title">Эксперты Smart Capital Partners</h2>
             <p className="section__sub">
               Финансы, маркетинг и юриспруденция — в одной команде.
             </p>

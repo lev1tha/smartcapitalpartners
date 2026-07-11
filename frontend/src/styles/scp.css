@@ -124,15 +124,21 @@
   gap: 24px;
 }
 .header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.5px;
   color: var(--color-navy);
   text-decoration: none;
 }
-.header__brand span {
-  color: var(--color-mint);
+.header__emblem {
+  width: 32px;
+  height: 32px;
+  display: block;
+  flex: none;
 }
 .header__menu {
   flex: 1;
@@ -647,6 +653,14 @@
   font-weight: 500;
   color: rgba(255, 255, 255, 0.7);
 }
+/* Калькулятор: подписи резервируют до 2 строк и прижаты книзу,
+   чтобы инпуты в ряду выравнивались по одной линии независимо от переноса */
+.calc__fields .field__label {
+  min-height: 2.7em;
+  line-height: 1.35;
+  display: flex;
+  align-items: flex-end;
+}
 .field__input {
   height: 44px;
   padding: 0 14px;
@@ -808,13 +822,20 @@
 }
 .footer__brand {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   color: #fff;
   max-width: 280px;
 }
-.footer__brand span {
-  color: var(--color-mint);
+.footer__brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer__emblem {
+  width: 30px;
+  height: 30px;
+  flex: none;
 }
 .footer__brand p {
   font-family: var(--font-sans);

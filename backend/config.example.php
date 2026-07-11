@@ -20,7 +20,7 @@ return [
         'username'  => 'eldimamaev@gmail.com',
         'password'  => '',            // ← App Password (16 символов, без пробелов)
         'from'      => 'eldimamaev@gmail.com',
-        'from_name' => 'MF PRO',
+        'from_name' => 'Smart Capital Partners',
     ],
 
     // === Telegram ===

@@ -72,7 +72,7 @@ export default function CrmSubmissions() {
     const csv = '﻿' + rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(',')).join('\n')
     const a = document.createElement('a')
     a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }))
-    a.download = `mfpro-${tab}.csv`
+    a.download = `scp-${tab}.csv`
     a.click()
   }
 

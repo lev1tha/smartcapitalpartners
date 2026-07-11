@@ -164,7 +164,7 @@ export default function Turnkey() {
               <span className="tk-success__emoji">✅</span>
               <h3>Заявка принята!</h3>
               <p>
-                Специалист MF PRO свяжется с вами в ближайшее время и подготовит
+                Специалист Smart Capital Partners свяжется с вами в ближайшее время и подготовит
                 расчёт под ваш проект.
               </p>
               <div className="tk-success__actions">

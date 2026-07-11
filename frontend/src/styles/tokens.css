@@ -28,18 +28,18 @@
   --color-on-primary: #ffffff;
   --color-on-dark: #ffffff;
   --color-on-dark-soft: #a1a1aa;
-  --color-brand-accent: #3b82f6;
+  --color-brand-accent: #528aeb;
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
 
-  /* Brand accents — финансы (navy) + маркетинг (mint) */
-  --color-navy: #0e2a47;
-  --color-navy-deep: #091a2e;
-  --color-navy-soft: #1b3a5c;
-  --color-mint: #10b981;
-  --color-mint-bright: #34d399;
-  --color-mint-soft: #ecfdf5;
+  /* Brand — Smart Capital Partners: navy (#001E52) + cornflower blue (#528AEB) */
+  --color-navy: #001e52;
+  --color-navy-deep: #001338;
+  --color-navy-soft: #123c72;
+  --color-mint: #528aeb;        /* brand accent (cornflower) — legacy token name */
+  --color-mint-bright: #7aa6f0;
+  --color-mint-soft: #eaf1fd;
 
   /* Typography */
   --font-display: "Cal Sans", "Inter", sans-serif;

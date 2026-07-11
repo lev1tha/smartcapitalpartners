@@ -82,7 +82,7 @@ export default function Quiz() {
       <div className="quiz">
         <Seo
           title="Экспресс-тест готовности к бизнесу"
-          description="Бесплатный тест за 2 минуты: оцените готовность вашей бизнес-идеи и получите персональную рекомендацию специалиста MF PRO."
+          description="Бесплатный тест за 2 минуты: оцените готовность вашей бизнес-идеи и получите персональную рекомендацию специалиста Smart Capital Partners."
           path="/test"
         />
         <div className="quiz__card quiz__intro">
@@ -90,7 +90,7 @@ export default function Quiz() {
           <h1 className="quiz__title">Готов ли ваш бизнес к запуску?</h1>
           <p className="quiz__lead">
             {total} коротких вопросов — около 2 минут. В конце вы получите оценку
-            готовности и персональную рекомендацию специалиста MF PRO.
+            готовности и персональную рекомендацию специалиста Smart Capital Partners.
           </p>
           <ul className="quiz__perks">
             <li>✓ Оценка готовности вашей идеи</li>
@@ -116,7 +116,7 @@ export default function Quiz() {
       <div className="quiz">
         <Seo
           title="Экспресс-тест готовности к бизнесу"
-          description="Бесплатный тест за 2 минуты: оцените готовность вашей бизнес-идеи и получите персональную рекомендацию специалиста MF PRO."
+          description="Бесплатный тест за 2 минуты: оцените готовность вашей бизнес-идеи и получите персональную рекомендацию специалиста Smart Capital Partners."
           path="/test"
         />
         <div className="quiz__card">
@@ -170,7 +170,7 @@ export default function Quiz() {
       <div className="quiz">
         <Seo
           title="Экспресс-тест готовности к бизнесу"
-          description="Бесплатный тест за 2 минуты: оцените готовность вашей бизнес-идеи и получите персональную рекомендацию специалиста MF PRO."
+          description="Бесплатный тест за 2 минуты: оцените готовность вашей бизнес-идеи и получите персональную рекомендацию специалиста Smart Capital Partners."
           path="/test"
         />
         <form className="quiz__card" onSubmit={submit}>
@@ -250,7 +250,7 @@ export default function Quiz() {
 
         {status === 'ok' ? (
           <p className="quiz__sent">
-            ✓ Результат отправлен. Специалист MF PRO свяжется с вами в ближайшее
+            ✓ Результат отправлен. Специалист Smart Capital Partners свяжется с вами в ближайшее
             время.
           </p>
         ) : (

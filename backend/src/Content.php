@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MFPro;
+namespace SmartCapitalPartners;
 
 /**
  * Хранилище контента сайта (карточки) в JSON-файлах backend/content/.

@@ -152,7 +152,7 @@ export default function CatalogDetail() {
             )}
 
             <div className="detail-block">
-              <h2 className="detail-block__title">Что вы получаете с MF PRO</h2>
+              <h2 className="detail-block__title">Что вы получаете с Smart Capital Partners</h2>
               <ul className="checklist">
                 {whatYouGet.map((item) => (
                   <li className="checklist__item" key={item}>

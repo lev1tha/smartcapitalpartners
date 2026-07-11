@@ -63,9 +63,12 @@ export default function Admin() {
   if (!authed) {
     return (
       <div className="admin-login">
-        <Seo title="CRM — вход" description="Панель сотрудников MF PRO" path="/admin" noindex />
+        <Seo title="CRM — вход" description="Панель сотрудников Smart Capital Partners" path="/admin" noindex />
         <form className="admin-login__card" onSubmit={doLogin}>
-          <div className="admin-login__brand">MF<span>PRO</span></div>
+          <div className="admin-login__brand">
+            <img src="/logo-emblem.svg" alt="" className="admin-login__emblem" />
+            Smart Capital Partners
+          </div>
           <h1>Вход для сотрудников</h1>
           <input className="admin-input" placeholder="Логин" value={login} onChange={(e) => setLogin(e.target.value)} autoFocus />
           <input className="admin-input" type="password" placeholder="Пароль" value={password} onChange={(e) => setPassword(e.target.value)} style={{ marginTop: 10 }} />
@@ -102,10 +105,13 @@ export default function Admin() {
 
   return (
     <div className="admin-shell">
-      <Seo title="CRM MF PRO" description="Панель сотрудников MF PRO" path="/admin" noindex />
+      <Seo title="CRM Smart Capital Partners" description="Панель сотрудников Smart Capital Partners" path="/admin" noindex />
 
       <aside className="admin-side">
-        <div className="admin-side__brand">MF<span>PRO</span></div>
+        <div className="admin-side__brand">
+          <img src="/logo-emblem.svg" alt="" className="admin-side__emblem" />
+          Smart Capital Partners
+        </div>
         <nav className="admin-side__nav">
           {visible.map((n) => (
             <button key={n.id} className={`admin-side__link ${active === n.id ? 'is-active' : ''}`} onClick={() => setSection(n.id)}>

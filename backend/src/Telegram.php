@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MFPro;
+namespace SmartCapitalPartners;
 
 /**
  * Отправка уведомлений в Telegram через Bot API.

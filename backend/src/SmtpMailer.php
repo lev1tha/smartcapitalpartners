@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MFPro;
+namespace SmartCapitalPartners;
 
 /**
  * Нативный SMTP-клиент поверх SSL (без сторонних библиотек).
@@ -47,7 +47,7 @@ final class SmtpMailer
         };
 
         $read(); // приветствие 220
-        $cmd('EHLO mfpro.local');
+        $cmd('EHLO scp.local');
         $read();
         $cmd('AUTH LOGIN');
         $read(); // 334
@@ -60,7 +60,7 @@ final class SmtpMailer
         }
 
         $from = (string)($cfg['from'] ?? $cfg['username']);
-        $fromName = (string)($cfg['from_name'] ?? 'MF PRO');
+        $fromName = (string)($cfg['from_name'] ?? 'Smart Capital Partners');
 
         $cmd("MAIL FROM:<{$from}>");
         $read();

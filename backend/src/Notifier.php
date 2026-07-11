@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MFPro;
+namespace SmartCapitalPartners;
 
 /**
  * Единая точка отправки уведомлений по всем каналам.

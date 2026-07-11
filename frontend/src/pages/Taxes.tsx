@@ -137,7 +137,7 @@ export default function Taxes() {
             <p className="tax-calc__disclaimer">
               ⚠️ Ставки иллюстративные и зависят от вида деятельности, района и
               формы расчёта. Актуальные значения уточняйте в ГНС КР — или закажите
-              точный расчёт у специалиста MF PRO.
+              точный расчёт у специалиста Smart Capital Partners.
             </p>
             <a href="/#contacts" className="btn btn--mint tax-calc__btn">
               Подобрать налоговый режим →

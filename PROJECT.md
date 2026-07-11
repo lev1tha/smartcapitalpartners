@@ -1,4 +1,4 @@
-# MF PRO — контекст проекта (handoff для нового чата)
+# Smart Capital Partners — контекст проекта (handoff для нового чата)
 
 > Этот файл — полная передача контекста. Прочитай его целиком перед продолжением работы.
 > Проект ведётся итеративно, по-русски, аккуратно: каждая фича проверяется сборкой + e2e + визуально в браузере.
@@ -7,7 +7,7 @@
 
 ## 1. Что это за проект
 
-**MF PRO** — портал «Маркетинг и финансы для бизнеса в Кыргызстане» (B2B, помощь предпринимателям).
+**Smart Capital Partners** — портал «Маркетинг и финансы для бизнеса в Кыргызстане» (B2B, помощь предпринимателям).
 Состоит из двух частей:
 
 1. **Публичный сайт** — лендинги, каталог бизнес-моделей, услуги, экспресс-тест, налоги, франшизы/инвестиции/готовые бизнесы.
@@ -21,7 +21,7 @@
 
 | | |
 |---|---|
-| Корень | `/Users/ashimovace/Desktop/projects/MFPro` |
+| Корень | `/Users/ashimovace/Desktop/projects/SmartCapitalPartners` |
 | Frontend | `frontend/` — React **19.2** + Vite **8** + TypeScript |
 | Роутинг | `react-router-dom` **6.30** (НЕ v7! откатили ради SSG) |
 | SSG/SEO | `vite-react-ssg` 0.9.1-beta — пререндер всех маршрутов в статичный HTML |
@@ -101,7 +101,7 @@ frontend/src/
 │   └── adminApi.ts        # fetch-обёртка с токеном (getToken/setToken/clearToken)
 ├── styles/
 │   ├── tokens.css         # CSS-переменные (цвета, шрифты, радиусы, отступы)
-│   ├── mfpro.css          # публичный сайт (хедер, hero, секции, футер)
+│   ├── scp.css          # публичный сайт (хедер, hero, секции, футер)
 │   ├── catalog.css, turnkey.css, taxes.css, offerings.css, quiz.css
 │   └── admin.css          # ВСЯ админка/CRM (большой файл)
 └── scripts/
@@ -142,7 +142,7 @@ backend/
 ```
 
 ### Конвенции PHP
-- `declare(strict_types=1)`, `namespace MFPro`, классы статические.
+- `declare(strict_types=1)`, `namespace SmartCapitalPartners`, классы статические.
 - Роут: `$router->post('/api/...', function () use ($config): array { ... return [...]; });`
 - Защита: `$user = Auth::user($config); if (!$user || !Crm::canX(...)) { http_response_code(403); return [...]; }`
 - `display_errors` выключен → ответ всегда чистый JSON.
@@ -197,7 +197,7 @@ backend/
 - `POST /api/crm/acc/tasks/delete` `{id}`
 - `POST /api/crm/acc/docs/save` `{item:{counterparty,type,status}}`; `/delete` `{id}`
 - `POST /api/crm/acc/settings` `{settings:{ecpValidUntil,links}}`
-- `POST /api/crm/acc/generate` `{month:'YYYY-MM'}` — авто-создание стандартных отчётов КР (идемпотентно). Шаблоны в `mfpro_acc_templates()` в `index.php`
+- `POST /api/crm/acc/generate` `{month:'YYYY-MM'}` — авто-создание стандартных отчётов КР (идемпотентно). Шаблоны в `scp_acc_templates()` в `index.php`
 
 **Маркетинг (canMarketing = director/manager/marketer):**
 - `GET  /api/crm/mkt/board` → `{submissionsMonth, submissionsTotal, byType, campaigns, settings}` — метрики из реальных заявок (leads/quiz/turnkey за текущий месяц)
@@ -208,7 +208,7 @@ backend/
 
 ## 7. Уведомления о заявках
 
-- **Telegram** — НАСТРОЕН и работает. Бот `@mfprokg_bot`, chat_id директора в `config.php`.
+- **Telegram** — НАСТРОЕН и работает. Бот `@scpkg_bot`, chat_id директора в `config.php`.
   Все 3 формы (lead/quiz/turnkey) шлют через `Notifier::send` → Telegram + (попытка) email.
 - **Email (Gmail SMTP)** — код готов (`SmtpMailer`), но **выключен** (`smtp.enabled=false`):
   ждёт App Password от пользователя (`eldimamaev@gmail.com`). Без него письма локально не доходят,
@@ -223,7 +223,7 @@ backend/
   на главной — JSON-LD Organization; на `/admin` — `noindex`.
 - `index.html` НЕ содержит title/description/og (чтобы не было дублей) — всё через React.
 - `public/robots.txt` + `public/sitemap.xml` (генерится `scripts/gen-sitemap.mjs`).
-- Перед деплоем: заменить домен `mfpro.kg` в `Seo.tsx`, `robots.txt`, `gen-sitemap.mjs`; добавить `public/og-image.png` (1200×630).
+- Перед деплоем: заменить домен `smartcapitalpartners.kg` в `Seo.tsx`, `robots.txt`, `gen-sitemap.mjs`; добавить `public/og-image.png` (1200×630).
 
 ---
 
@@ -278,7 +278,7 @@ backend/
 </details>
 
 ### B. Авто-генерация бухгалтерских задач 1-го числа — ✅ СДЕЛАНО
-- Шаблоны в `mfpro_acc_templates()` (`backend/public/index.php`): ежемесячные (20: подоходный+соцфонд; 25: НДС, налог с продаж), квартальный (мес. 4/7/10/1, день 20), годовой (март, день 1).
+- Шаблоны в `scp_acc_templates()` (`backend/public/index.php`): ежемесячные (20: подоходный+соцфонд; 25: НДС, налог с продаж), квартальный (мес. 4/7/10/1, день 20), годовой (март, день 1).
 - Эндпоинт `POST /api/crm/acc/generate` `{month}` — идемпотентно (по title+deadline), `reportingPeriod` = предыдущий месяц.
 - В UI бухгалтерии — кнопка «Сгенерировать отчёты» (текущий месяц).
 - e2e: создание, идемпотентность, отказ для не-бухгалтера.
@@ -290,7 +290,7 @@ backend/
 - **Telegram-уведомления** сотруднику при назначении задачи/поста.
 - **Email через Gmail SMTP** — ждёт App Password от пользователя.
 - **Дедлайны/приоритеты** в обычных задачах (kanban) с подсветкой просрочки.
-- **Деплой**: домен, хостинг (Vercel/Netlify для статики + PHP-хостинг для API), заменить mfpro.kg, og-image, сменить пароли.
+- **Деплой**: домен, хостинг (Vercel/Netlify для статики + PHP-хостинг для API), заменить smartcapitalpartners.kg, og-image, сменить пароли.
 - Детальные страницы франшиз/инвестиций уже есть; публичные «Контакты», блог — по желанию.
 
 ---

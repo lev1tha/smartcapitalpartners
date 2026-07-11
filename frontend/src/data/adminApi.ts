@@ -1,4 +1,4 @@
-const TOKEN_KEY = 'mfpro_admin_token'
+const TOKEN_KEY = 'scp_admin_token'
 
 export const getToken = () =>
   typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEY) : null

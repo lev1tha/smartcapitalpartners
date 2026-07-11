@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MFPro;
+namespace SmartCapitalPartners;
 
 /**
  * Авторизация сотрудников CRM: логин/пароль → подписанный токен (login.hmac).
@@ -28,7 +28,7 @@ final class Auth
     /** @param array<string,mixed> $config */
     private static function secret(array $config): string
     {
-        return (string)($config['auth_secret'] ?? 'mfpro-secret');
+        return (string)($config['auth_secret'] ?? 'scp-secret');
     }
 
     /** @param array<string,mixed> $u @return array{id:string,name:string,role:string} */

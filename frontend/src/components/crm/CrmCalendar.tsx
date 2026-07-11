@@ -293,7 +293,7 @@ function AccountForm({ onClose, onSave }: { onClose: () => void; onSave: (name: 
           <button className="drawer__close" onClick={onClose}><Icon name="x" size={18} /></button>
         </div>
         <div className="drawer__form">
-          <input className="admin-input" placeholder="Название (например: MF PRO — Instagram)" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+          <input className="admin-input" placeholder="Название (например: Smart Capital Partners — Instagram)" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
           <label className="cms-field">
             <span>Платформа</span>
             <select className="admin-input" value={platform} onChange={(e) => setPlatform(e.target.value)}>

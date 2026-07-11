@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MFPro;
+namespace SmartCapitalPartners;
 
 /**
  * Простая отправка писем через PHP mail().
- * Получатель настраивается переменной окружения MFPRO_LEADS_EMAIL.
+ * Получатель настраивается переменной окружения SCP_LEADS_EMAIL.
  *
  * ВАЖНО: для реальной доставки на localhost нужен настроенный MTA
  * (sendmail/postfix) или SMTP. На проде обычно работает из коробки.
@@ -16,7 +16,7 @@ final class Mailer
 {
     public static function recipient(): string
     {
-        $env = getenv('MFPRO_LEADS_EMAIL');
+        $env = getenv('SCP_LEADS_EMAIL');
         return is_string($env) && $env !== '' ? $env : 'eldimamaev@gmail.com';
     }
 
@@ -24,7 +24,7 @@ final class Mailer
     {
         $to = self::recipient();
         $headers = implode("\r\n", [
-            'From: MF PRO <noreply@mfpro.kg>',
+            'From: Smart Capital Partners <noreply@smartcapitalpartners.kg>',
             'Content-Type: text/plain; charset=utf-8',
             'MIME-Version: 1.0',
         ]);

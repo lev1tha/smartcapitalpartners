@@ -1,5 +1,5 @@
 import type { RouteRecord } from 'vite-react-ssg'
-import './styles/mfpro.css'
+import './styles/scp.css'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Catalog from './pages/Catalog'

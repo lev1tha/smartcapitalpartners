@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * MFPro API — единая точка входа (front controller).
+ * Smart Capital Partners API — единая точка входа (front controller).
  * Запуск для разработки:
  *   php -S localhost:8000 -t public
  */
@@ -12,12 +12,12 @@ declare(strict_types=1);
 ini_set('display_errors', '0');
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 
-use MFPro\Router;
-use MFPro\Notifier;
-use MFPro\Auth;
-use MFPro\Content;
-use MFPro\Store;
-use MFPro\Crm;
+use SmartCapitalPartners\Router;
+use SmartCapitalPartners\Notifier;
+use SmartCapitalPartners\Auth;
+use SmartCapitalPartners\Content;
+use SmartCapitalPartners\Store;
+use SmartCapitalPartners\Crm;
 
 require __DIR__ . '/../src/Router.php';
 require __DIR__ . '/../src/Mailer.php';
@@ -51,7 +51,7 @@ $router = new Router();
 $router->get('/api/health', static function (): array {
     return [
         'status'  => 'ok',
-        'service' => 'mfpro-api',
+        'service' => 'scp-api',
         'time'    => date(DATE_ATOM),
     ];
 });
@@ -93,7 +93,7 @@ $router->post('/api/lead', static function (): array {
     @file_put_contents($file, json_encode($leads, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
     $body = implode("\n", [
-        'Новая заявка с сайта MF PRO',
+        'Новая заявка с сайта Smart Capital Partners',
         '===========================',
         "Имя:     {$name}",
         "Телефон: {$phone}",
@@ -101,7 +101,7 @@ $router->post('/api/lead', static function (): array {
         '',
         'Дата: ' . date('d.m.Y H:i'),
     ]);
-    $sent = Notifier::send('MF PRO — заявка: ' . $name, $body);
+    $sent = Notifier::send('Smart Capital Partners — заявка: ' . $name, $body);
 
     return ['status' => 'ok', 'sent' => $sent, 'message' => 'Заявка принята'];
 });
@@ -154,7 +154,7 @@ $router->post('/api/quiz', static function (): array {
 
     // Формируем письмо.
     $lines = [
-        'Новый результат экспресс-теста MF PRO',
+        'Новый результат экспресс-теста Smart Capital Partners',
         '======================================',
         "Имя:      {$name}",
         "Телефон:  {$phone}",
@@ -173,7 +173,7 @@ $router->post('/api/quiz', static function (): array {
     $lines[] = '';
     $lines[] = 'Дата: ' . date('d.m.Y H:i');
 
-    $sent = Notifier::send('MF PRO — заявка с теста: ' . $name, implode("\n", $lines));
+    $sent = Notifier::send('Smart Capital Partners — заявка с теста: ' . $name, implode("\n", $lines));
 
     return [
         'status'  => 'ok',
@@ -235,7 +235,7 @@ $router->post('/api/turnkey', static function (): array {
         '',
         'Дата: ' . date('d.m.Y H:i'),
     ]);
-    $sent = Notifier::send('MF PRO — бизнес под ключ: ' . $name, $body);
+    $sent = Notifier::send('Smart Capital Partners — бизнес под ключ: ' . $name, $body);
 
     return ['status' => 'ok', 'sent' => $sent, 'message' => 'Заявка принята'];
 });
@@ -740,7 +740,7 @@ $router->post('/api/crm/calendar/delete', function () use ($config): array {
 
 // ===================== CRM: SMM-ДАШБОРД =====================
 
-function mfpro_smm_default_settings(): array
+function scp_smm_default_settings(): array
 {
     return [
         'tools' => [
@@ -771,7 +771,7 @@ $router->get('/api/crm/smm/board', function () use ($config): array {
 
     $settings = json_decode((string)@file_get_contents(__DIR__ . '/../storage/smm-settings.json'), true);
     if (!is_array($settings) || empty($settings)) {
-        $settings = mfpro_smm_default_settings();
+        $settings = scp_smm_default_settings();
     }
     return ['tasks' => $tasks, 'settings' => $settings];
 });
@@ -883,7 +883,7 @@ $router->post('/api/crm/smm/settings', function () use ($config): array {
 
 // ===================== CRM: БУХГАЛТЕРИЯ =====================
 
-function mfpro_acc_default_settings(): array
+function scp_acc_default_settings(): array
 {
     return [
         'ecpValidUntil' => '',
@@ -904,7 +904,7 @@ $router->get('/api/crm/acc/board', function () use ($config): array {
     }
     $settings = json_decode((string)@file_get_contents(__DIR__ . '/../storage/acc-settings.json'), true);
     if (!is_array($settings) || empty($settings)) {
-        $settings = mfpro_acc_default_settings();
+        $settings = scp_acc_default_settings();
     }
     return [
         'tasks' => Store::read('acc-tasks.json'),
@@ -1118,7 +1118,7 @@ $router->post('/api/crm/acc/settings', function () use ($config): array {
  * Стандартные бухгалтерские отчёты КР.
  * day — число месяца сдачи; quarterMonths — в какие месяцы (1-based) сдаётся квартальный.
  */
-function mfpro_acc_templates(): array
+function scp_acc_templates(): array
 {
     return [
         // Ежемесячные
@@ -1160,7 +1160,7 @@ $router->post('/api/crm/acc/generate', function () use ($config): array {
     };
 
     $created = [];
-    foreach (mfpro_acc_templates() as $tpl) {
+    foreach (scp_acc_templates() as $tpl) {
         // фильтр по кварталу/году
         if (($tpl['period'] ?? '') === 'quarterly' && !in_array($m, $tpl['quarterMonths'] ?? [], true)) {
             continue;
@@ -1192,7 +1192,7 @@ $router->post('/api/crm/acc/generate', function () use ($config): array {
 
 // ===================== CRM: МАРКЕТИНГ =====================
 
-function mfpro_mkt_default_settings(): array
+function scp_mkt_default_settings(): array
 {
     return [
         'links' => [
@@ -1235,7 +1235,7 @@ $router->get('/api/crm/mkt/board', function () use ($config): array {
 
     $settings = json_decode((string)@file_get_contents(__DIR__ . '/../storage/mkt-settings.json'), true);
     if (!is_array($settings) || empty($settings)) {
-        $settings = mfpro_mkt_default_settings();
+        $settings = scp_mkt_default_settings();
     }
     return [
         'month' => $month,
