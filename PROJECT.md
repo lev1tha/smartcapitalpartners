@@ -1,19 +1,21 @@
 # Smart Capital Partners — контекст проекта (handoff для нового чата)
 
-> Этот файл — полная передача контекста. Прочитай его целиком перед продолжением работы.
+> Прочитай этот файл целиком перед продолжением работы.
 > Проект ведётся итеративно, по-русски, аккуратно: каждая фича проверяется сборкой + e2e + визуально в браузере.
 
 ---
 
 ## 1. Что это за проект
 
-**Smart Capital Partners** — портал «Маркетинг и финансы для бизнеса в Кыргызстане» (B2B, помощь предпринимателям).
-Состоит из двух частей:
+**Smart Capital Partners** — портал «Маркетинг и финансы для бизнеса в Кыргызстане» (B2B).
 
 1. **Публичный сайт** — лендинги, каталог бизнес-моделей, услуги, экспресс-тест, налоги, франшизы/инвестиции/готовые бизнесы.
-2. **CRM-админка (`/admin`)** — внутренняя система для сотрудников: задачи (kanban), контент-календарь, ролевые дашборды (SMM, Бухгалтерия), управление контентом, заявки.
+2. **CRM (`/admin`)** — внутренняя система: обзор, задачи (kanban + doc-view), сделки (воронки продаж/инвестиций/партнёрств с P&L),
+   клиенты, база знаний, уведомления (web + Telegram), поиск ⌘K, ролевые дашборды (маркетинг, SMM, бухгалтерия),
+   контент-календарь, заявки, каталог, идеи, сотрудники, настройки (права на поля, свойства, журнал).
 
-Дизайн — чистый, в духе Cal.com / Notion: белый фон, тёмно-синий (navy) + мятный (mint) акценты.
+Дизайн — Cal.com / Notion: navy `#001E52` + cornflower `#528AEB`. У CRM **тёмная тема по умолчанию** и светлая (переключатель в сайдбаре).
+Суммы — моноширинным JetBrains Mono. Иконки — только SVG через `<Icon name="…" />`, без эмодзи.
 
 ---
 
@@ -21,54 +23,55 @@
 
 | | |
 |---|---|
-| Корень | `/Users/ashimovace/Desktop/projects/SmartCapitalPartners` |
-| Frontend | `frontend/` — React **19.2** + Vite **8** + TypeScript |
-| Роутинг | `react-router-dom` **6.30** (НЕ v7! откатили ради SSG) |
-| SSG/SEO | `vite-react-ssg` 0.9.1-beta — пререндер всех маршрутов в статичный HTML |
-| Backend | `backend/` — **PHP 8.5**, без фреймворка, свой минималистичный роутер |
-| Хранилище | JSON-файлы (`backend/storage/`, `backend/content/`), загрузки в `backend/public/uploads/` |
-| Node | v24 (умеет запускать `.ts` напрямую — используется в seed/sitemap скриптах) |
+| Корень | `/Users/ashimovace/Desktop/projects/MFPro` |
+| Frontend | `frontend/` — React **19.2** + Vite **8** + TypeScript, `framer-motion` 14, Capacitor 8 |
+| Роутинг | `react-router-dom` **6.30** (НЕ v7 — ради SSG) |
+| SSG/SEO | `vite-react-ssg` 0.9.1-beta — пререндер публичных маршрутов |
+| Backend | `backend/` — **Django 5.2 + DRF**, Python 3.12 (`backend/.venv`) |
+| База | SQLite в dev (`backend/db.sqlite3`), PostgreSQL в проде (`DATABASE_URL`); PostgreSQL 16 установлен локально через brew |
+| Файлы | `backend/uploads/` (URL `/uploads/…`, как раньше) |
+| Legacy | `backend-php/` — старый PHP-бэкенд. Не запускается. Нужен только для `import_legacy` |
+| Node | v24 |
 
-### Запуск (нужно 2 терминала)
+### Запуск (2 терминала или `.claude/launch.json`: `backend` + `frontend`)
 ```bash
-# 1. Бэкенд
-cd backend && php -S localhost:8000 -t public
-# (php установлен через brew; если нет в PATH: export PATH="/opt/homebrew/bin:$PATH")
-
-# 2. Фронтенд
-cd frontend && npm run dev   # http://localhost:5173, проксирует /api → :8000
+cd backend  && .venv/bin/python manage.py runserver 8000
+cd frontend && npm run dev            # http://localhost:5173 → /api и /uploads проксируются на :8000
 ```
-Работаем на **http://localhost:5173**. Админка — **/admin**.
+CRM — **http://localhost:5173/admin**.
 
 ### Сборка и проверки
 ```bash
-cd frontend && npm run build          # gen-sitemap + tsc (typecheck) + vite-react-ssg build
-cd backend  && node tests/crm.e2e.mjs # 48 e2e-тестов (нужен запущенный php-сервер :8000)
+cd frontend && npm run build                 # typecheck + SSG
+cd backend  && node tests/crm.e2e.mjs        # 57 — прежние модули
+cd backend  && node tests/pipeline.e2e.mjs   # 59 — клиенты/сделки/права/документы/уведомления/поиск
+cd backend  && .venv/bin/python manage.py check
 ```
+Оба e2e нужен запущенный Django на :8000. Для тестов внешние каналы лучше выключать: `NOTIFY_ASYNC=0`.
 
 ---
 
-## 3. Роли и доступы (вход в /admin)
+## 3. Роли и доступы
 
-Хранятся в `backend/config.php` (gitignored). Вход по **логину/паролю**, токен подписывается `auth_secret`.
+Сотрудники — `django.contrib.auth.User` + `crm.Profile(role)`. Создание/сброс: `manage.py seed_users` (пароли по умолчанию `login + '123'`,
+**сменить перед публикацией**: `manage.py changepassword <login>`). Токен — DRF Token с TTL `AUTH_TOKEN_TTL_DAYS` (30), выход отзывает токен.
 
-| Логин | Пароль | Роль | Что видит в админке |
-|-------|--------|------|---------------------|
-| `director` | `director123` | Директор | всё |
-| `manager` | `manager123` | Управляющий | всё |
-| `marketer` | `marketer123` | Маркетолог | Задачи, Контент-календарь, Заявки, Каталог, Идеи |
-| `smm` | `smm123` | СММ | Задачи, **SMM-дашборд**, Контент-календарь, Идеи |
-| `accountant` | `accountant123` | Бухгалтер | Задачи, **Бухгалтерия**, Идеи |
-| `finance` | `finance123` | Финансист | Задачи, Заявки (только тесты), Бухгалтерия, Идеи |
+| Логин | Роль | Разделы |
+|---|---|---|
+| `director` | Директор | всё + матрица прав на поля |
+| `manager` | Управляющий | всё, кроме матрицы прав |
+| `marketer` | Маркетолог | задачи, сделки/клиенты (без сумм), маркетинг, календарь, заявки, каталог |
+| `smm` | СММ | задачи, SMM-дашборд, календарь |
+| `accountant` | Бухгалтер | задачи, бухгалтерия, клиенты/сделки (видит финансы, правит платежи) |
+| `finance` | Финансист | задачи, заявки (тесты), бухгалтерия, клиенты/сделки (полные финансы) |
 
-> ⚠️ Перед публикацией сменить ВСЕ пароли + `auth_secret` в `config.php`.
+Правила разделов — `backend/crm/roles.py` (`section_access(role)` отдаётся в `/api/crm/me` → `sections`, фронт строит меню по нему).
 
-Ролевые правила (`backend/src/Crm.php`):
-- `isManager` = director, manager
-- `canCalendar` = director, manager, marketer, smm
-- `canSmm` = director, manager, smm
-- `canAccounting` = director, manager, accountant, finance
-- `submissionAccess`: director/manager/marketer — все заявки; finance — только тесты (quiz); smm/accountant — нет
+**Права на поля** — `backend/crm/permissions.py`:
+- `FIELD_REGISTRY`: `client.{email,phone,telegram}`, `deal.{amount,commission,probability}`, `finance.payments` — кто видит/правит по умолчанию.
+- Переопределения — таблица `FieldPermission`, меняет директор в CRM → Настройки → Права на поля.
+- Скрытое поле приходит как `null` + имя в `hidden`; запись защищённого поля → **403** (не игнорируется молча).
+- Директор всегда видит всё (нельзя «запереть» себя).
 
 ---
 
@@ -76,43 +79,27 @@ cd backend  && node tests/crm.e2e.mjs # 48 e2e-тестов (нужен запу
 
 ```
 frontend/src/
-├── App.tsx                # routes (vite-react-ssg RouteRecord[]) + /admin отдельно
-├── main.tsx               # ViteReactSSG({ routes })
-├── pages/                 # Home, Catalog, CatalogDetail, Turnkey, Quiz, Taxes,
-│                          # Franchises, FranchiseDetail, Investments, InvestmentDetail,
-│                          # ReadyBusiness, ReadyDetail, Admin
-├── components/
-│   ├── Header, Hero, ProductMatrix, Mission, KnowledgeBase, Tools, Trust, LeadFooter
-│   ├── Layout.tsx         # общий каркас публичных страниц (хедер+футер, скролл к якорю)
-│   ├── Seo.tsx            # <Head> из vite-react-ssg, per-route мета + JSON-LD + noindex
-│   ├── Icon.tsx           # SVG-иконки (Feather-style). ВСЕГДА используем их, НЕ эмодзи!
-│   ├── AdminCatalog.tsx   # CRUD карточек каталога в админке
-│   └── crm/
-│       ├── CrmTasks.tsx       # kanban-доска задач (drag-and-drop между статусами)
-│       ├── CrmSubmissions.tsx # заявки (лиды/тесты/под ключ), ролевой доступ, CSV
-│       ├── CrmIdeas.tsx       # доска идей (+ удаление)
-│       ├── CrmUsers.tsx       # список сотрудников
-│       ├── CrmCalendar.tsx    # контент-календарь (аккаунты + посты, DnD по дням)
-│       ├── CrmSmm.tsx         # SMM-дашборд (инструменты | TODO | KPI)
-│       └── CrmAccounting.tsx  # Бухгалтерия (радар | доступы | чек-лист | документы)
-├── data/
-│   ├── catalog.ts, offerings.ts, taxes.ts, trust.ts, turnkey.ts, quiz.ts  # SEED-данные
-│   ├── useContent.ts      # хук живого контента (seed → подмена данными из API)
-│   └── adminApi.ts        # fetch-обёртка с токеном (getToken/setToken/clearToken)
-├── styles/
-│   ├── tokens.css         # CSS-переменные (цвета, шрифты, радиусы, отступы)
-│   ├── scp.css          # публичный сайт (хедер, hero, секции, футер)
-│   ├── catalog.css, turnkey.css, taxes.css, offerings.css, quiz.css
-│   └── admin.css          # ВСЯ админка/CRM (большой файл)
-└── scripts/
-    ├── gen-sitemap.mjs    # генерит public/sitemap.xml из данных (в npm build)
-    └── seed-content.ts    # одноразовый сид backend/content/*.json из src/data (Node TS)
+├── App.tsx, main.tsx (+ mobile.ts — в Capacitor сразу открывает /admin)
+├── pages/Admin.tsx           # оболочка CRM: меню по me.sections, топбар (поиск ⌘K, колокольчик), тема,
+│                             # NavCtx — переходы к сущностям (task/deal/client/document/submission)
+├── components/crm/
+│   ├── ui.tsx                # ThemeProvider/ThemeToggle, Drawer (framer-motion), Money, Avatar, Empty, Reveal
+│   ├── format.ts, theme.ts, blocks.ts, nav.ts   # хелперы без React (Fast Refresh)
+│   ├── BlockEditor.tsx       # Notion-блоки: «/» меню, # ## - [] > ---, Enter/Backspace/стрелки, чек-листы
+│   ├── CrmDashboard.tsx      # обзор: плитки, дедлайны, воронки, недавние сделки
+│   ├── CrmTasks.tsx          # kanban + карточка задачи (свойства, doc-view, результат, история)
+│   ├── CrmDeals.tsx          # доска сделок (DnD, «капитальная полоса» по этапам), карточка: финансы, платежи/P&L, заметки
+│   ├── CrmClients.tsx        # список + профиль (контакты, P&L, сделки, задачи, документы, заметки)
+│   ├── CrmDocs.tsx           # база знаний (дерево страниц, автосохранение)
+│   ├── NotificationCenter.tsx# колокольчик, лента, настройки Telegram/DND
+│   ├── CommandPalette.tsx    # ⌘K
+│   ├── CrmSettings.tsx       # уведомления | свойства | права на поля | журнал
+│   └── CrmSmm/Accounting/Marketing/Calendar/Submissions/Ideas/Users.tsx  # прежние разделы (не менялись)
+├── data/adminApi.ts          # fetch + токен, API_BASE из VITE_API_URL (для приложения), событие 401
+└── styles/tokens.css (+[data-theme=dark]), admin.css (база), crm.css (новые разделы)
 ```
 
-### Публичные маршруты
-`/`, `/catalog`, `/catalog/:id`, `/turnkey`, `/taxes`, `/test`,
-`/franchises`, `/franchises/:id`, `/investments`, `/investments/:id`,
-`/ready`, `/ready/:id`, `/admin` (noindex, отдельно от Layout).
+Публичные маршруты: `/`, `/catalog(/:id)`, `/turnkey`, `/taxes`, `/test`, `/franchises(/:id)`, `/investments(/:id)`, `/ready(/:id)`, `/admin` (noindex).
 
 ---
 
@@ -120,187 +107,104 @@ frontend/src/
 
 ```
 backend/
-├── public/index.php       # ЕДИНАЯ точка входа: CORS, ini display_errors off, маршруты, dispatch
-├── public/uploads/        # загруженные файлы (квитки, вложения задач)
-├── config.php             # СЕКРЕТЫ (gitignored): recipient, smtp, telegram, admin, auth_secret, users
-├── config.example.php     # шаблон конфига
-├── src/
-│   ├── Router.php         # get()/post()/dispatch(), обработчик возвращает массив → JSON
-│   ├── Auth.php           # логин/пароль → токен "login.hmac", роли, ROLES
-│   ├── Crm.php            # бизнес-логика: статусы задач, transition(), ролевые правила
-│   ├── Content.php        # CRUD контента сайта (models/franchises/investments/ready)
-│   ├── Store.php          # JSON-хранилище (read/write/id) для storage/*.json
-│   ├── Notifier.php       # единая отправка: email (SMTP/mail) + Telegram
-│   ├── SmtpMailer.php     # нативный SMTP-over-SSL клиент (без зависимостей)
-│   ├── Telegram.php       # отправка в Telegram Bot API через cURL
-│   └── Mailer.php         # fallback mail(), получатель
-├── storage/               # *.json: leads, quiz-results, turnkey-requests, tasks, ideas,
-│                          # accounts, calendar, smm-tasks, smm-settings,
-│                          # acc-tasks, acc-docs, acc-settings
-├── content/               # models.json, franchises.json, investments.json, ready.json
-└── tests/crm.e2e.mjs      # 48 e2e (через fetch к API)
+├── manage.py, requirements.txt, .env(.example)
+├── config/settings.py        # env через python-dotenv; CORS включает capacitor://localhost и https://localhost
+├── crm/
+│   ├── models.py             # Profile, Lead/QuizResult/TurnkeyRequest, ContentItem, Client, Deal, Payment, Task(+TaskEvent),
+│   │                         # Idea, SocialAccount, CalendarPost, SmmTask, AccTask, AccDoc, Campaign, BoardSettings,
+│   │                         # Document, Notification, AuditLog, FieldPermission, FieldDefinition
+│   ├── roles.py              # роли и правила разделов
+│   ├── permissions.py        # FieldAccess (матрица полей), декоратор require()
+│   ├── auth.py               # Bearer-токен с TTL
+│   ├── notify.py             # Telegram/email, DND, приоритеты; внешние каналы — после коммита, в фоне
+│   ├── audit.py, blocks.py, defaults.py, presenters.py, utils.py, signals.py (Unicode LIKE для SQLite)
+│   ├── views/public.py       # health, lead, quiz, turnkey, content
+│   ├── views/auth.py         # login/logout/me/users/submissions/content save|delete
+│   ├── views/tasks.py        # задачи, переходы, doc-view, upload
+│   ├── views/boards.py       # идеи, календарь, SMM, бухгалтерия, маркетинг
+│   ├── views/crm.py          # клиенты, сделки, платежи, дашборд
+│   ├── views/workspace.py    # документы, уведомления, поиск, журнал, права, свойства
+│   ├── urls.py               # все пути — без завершающего слэша
+│   └── management/commands/  # seed_users [--from-php], import_legacy <backend-php>
+├── uploads/                  # файлы (gitignored)
+└── tests/crm.e2e.mjs, tests/pipeline.e2e.mjs
 ```
 
-### Конвенции PHP
-- `declare(strict_types=1)`, `namespace SmartCapitalPartners`, классы статические.
-- Роут: `$router->post('/api/...', function () use ($config): array { ... return [...]; });`
-- Защита: `$user = Auth::user($config); if (!$user || !Crm::canX(...)) { http_response_code(403); return [...]; }`
-- `display_errors` выключен → ответ всегда чистый JSON.
-- Хранилище — через `Store::read/write('file.json')`.
+### Конвенции Python
+- Ответ ошибки всегда `{"error": "…"}` (`ApiError(message, code)`), коды как в PHP: 401/403/404/422.
+- Вьюхи — `@api_view` + `@require(check, message, anon_status)`; `anon_status=403` там, где PHP отвечал анониму 403.
+- JSON-ключи ответов — camelCase (см. `presenters.py`), фронт не менялся для старых разделов.
+- Финансовые поля в ответах — через `field_access(request)`; перед записью — `fa.assert_editable(...)`.
+- Изменения клиентов/сделок/платежей/задач пишутся в `AuditLog` (`audit.record`).
+- Уведомления — `notify(users, title, body, kind, priority, link)`; роли — `users_with_roles(...)`.
 
 ---
 
-## 6. API — полный список эндпоинтов
+## 6. API
 
-**Публичные:**
-- `GET  /api/health`
-- `POST /api/lead` `{name,phone,topic}` — лид с главной
-- `POST /api/quiz` `{contact,score,maxScore,level,answers}` — результат теста
-- `POST /api/turnkey` `{name,phone,sphere,budget,city,services}` — заявка «под ключ»
-- `GET  /api/content?type=models|franchises|investments|ready` — карточки сайта
+**Прежние пути сохранены 1-в-1** (см. раздел «API» старой версии: `/api/lead|quiz|turnkey|content`, `/api/admin/login|submissions|content/*`,
+`/api/crm/me|users|tasks/*|upload|ideas/*|accounts/*|calendar/*|smm/*|acc/*|mkt/*`).
 
-**Контент (роли director/manager/marketer):**
-- `POST /api/admin/content/save` `{type,item}`
-- `POST /api/admin/content/delete` `{type,id}`
+Новое:
+- `POST /api/admin/logout`; `GET /api/crm/me` дополнительно отдаёт `sections`, `fields`, `unreadNotifications`.
+- Задачи: `POST /api/crm/tasks/content` `{id, content?, customFields?, startDate?, dueDate?}`; в `save` — `priority`, `startDate`, `clientId`, `dealId`, `content`, `customFields`. Даты принимают `ГГГГ-ММ-ДД` и `ДД.ММ`.
+- `GET /api/crm/dashboard`.
+- Клиенты: `GET /api/crm/clients?q&status`, `GET /api/crm/clients/<id>`, `POST …/clients/save|delete`.
+- Сделки: `GET /api/crm/deals?pipeline&q`, `GET /api/crm/deals/<id>`, `POST …/deals/save|move|delete`; платежи `POST /api/crm/payments/save|delete`.
+  Воронки и этапы — `PIPELINES` в `models.py` (sales / investment / partnership).
+- Документы: `GET /api/crm/docs?clientId&dealId`, `GET /api/crm/docs/<id>`, `POST …/docs/save|delete`.
+- Уведомления: `GET /api/crm/notifications?unread=1`, `POST …/read {ids|all}`, `GET|POST …/settings`, `POST …/test`.
+- `GET /api/crm/search?q=`, `GET /api/crm/logs?entityType&entityId` (руководители).
+- `GET|POST /api/crm/permissions/fields` (директор), `GET /api/crm/fields?resource`, `POST /api/crm/fields/save|delete` (руководители).
 
-**Авторизация:**
-- `POST /api/admin/login` `{login,password}` → `{token,user,roleLabel}`
-- `GET  /api/crm/me` → `{user,roleLabel,isManager,access}`
-
-**Заявки (ролевой доступ):**
-- `GET  /api/admin/submissions` → `{access,counts,leads,quiz,turnkey}`
-
-**Задачи (kanban):**
-- `GET  /api/crm/tasks` → `{tasks,statuses,roles,me,isManager}`
-- `POST /api/crm/tasks/save` (manager) — создать/изменить
-- `POST /api/crm/tasks/transition` `{id,action,payload}` — start/submit/approve/reject
-- `POST /api/crm/tasks/delete` (manager)
-- `POST /api/crm/upload` (multipart) — вложение → `{attachment}`
-
-**Идеи:** `GET /api/crm/ideas`, `POST /api/crm/ideas`, `POST /api/crm/ideas/delete`
-**Сотрудники:** `GET /api/crm/users` (manager)
-
-**Контент-календарь (canCalendar):**
-- `GET  /api/crm/accounts`; `POST /api/crm/accounts/save` (dir/mgr/mkt); `POST /api/crm/accounts/delete` (mgr)
-- `GET  /api/crm/calendar?accountId=`; `POST /api/crm/calendar/save`; `POST /api/crm/calendar/delete`
-
-**SMM-дашборд (canSmm):**
-- `GET  /api/crm/smm/board` → `{tasks,settings}`
-- `POST /api/crm/smm/tasks/save` `{item}`; `/toggle` `{id}`; `/delete` `{id}`
-- `POST /api/crm/smm/settings` `{settings:{tools,kpi}}`
-
-**Бухгалтерия (canAccounting):**
-- `GET  /api/crm/acc/board` → `{tasks,docs,settings}`
-- `POST /api/crm/acc/tasks/save` `{item}` (period: daily/monthly/quarterly/yearly; status: not_started/in_progress/formed/submitted)
-- `POST /api/crm/acc/tasks/status` `{id,status}`
-- `POST /api/crm/acc/tasks/receipt` (multipart `file`+`id`) — квиток → статус submitted
-- `POST /api/crm/acc/tasks/delete` `{id}`
-- `POST /api/crm/acc/docs/save` `{item:{counterparty,type,status}}`; `/delete` `{id}`
-- `POST /api/crm/acc/settings` `{settings:{ecpValidUntil,links}}`
-- `POST /api/crm/acc/generate` `{month:'YYYY-MM'}` — авто-создание стандартных отчётов КР (идемпотентно). Шаблоны в `scp_acc_templates()` в `index.php`
-
-**Маркетинг (canMarketing = director/manager/marketer):**
-- `GET  /api/crm/mkt/board` → `{submissionsMonth, submissionsTotal, byType, campaigns, settings}` — метрики из реальных заявок (leads/quiz/turnkey за текущий месяц)
-- `POST /api/crm/mkt/campaigns/save` `{item:{name,channel,status,budget,spent,leads}}`; `/delete` `{id}`
-- `POST /api/crm/mkt/settings` `{settings:{links,funnel,budgetPlan}}`
+Формат блоков документа: `[{id, type: p|h1|h2|h3|bullet|numbered|todo|quote|callout|code|divider, text, checked?}]` (валидация в `blocks.py`).
 
 ---
 
-## 7. Уведомления о заявках
+## 7. Уведомления
 
-- **Telegram** — НАСТРОЕН и работает. Бот `@scpkg_bot`, chat_id директора в `config.php`.
-  Все 3 формы (lead/quiz/turnkey) шлют через `Notifier::send` → Telegram + (попытка) email.
-- **Email (Gmail SMTP)** — код готов (`SmtpMailer`), но **выключен** (`smtp.enabled=false`):
-  ждёт App Password от пользователя (`eldimamaev@gmail.com`). Без него письма локально не доходят,
-  но заявки всегда сохраняются в `storage/*.json` и идут в Telegram.
-
----
-
-## 8. SEO / пререндеринг
-
-- `vite-react-ssg` генерит статичный HTML для каждого маршрута (32 страницы) в `npm run build`.
-- `Seo.tsx` (через `<Head>`) задаёт per-route `<title>`, `description`, Open Graph, Twitter, canonical;
-  на главной — JSON-LD Organization; на `/admin` — `noindex`.
-- `index.html` НЕ содержит title/description/og (чтобы не было дублей) — всё через React.
-- `public/robots.txt` + `public/sitemap.xml` (генерится `scripts/gen-sitemap.mjs`).
-- Перед деплоем: заменить домен `smartcapitalpartners.kg` в `Seo.tsx`, `robots.txt`, `gen-sitemap.mjs`; добавить `public/og-image.png` (1200×630).
+- **Заявки с сайта** → Telegram директору (`TELEGRAM_LEADS_CHAT_ID`) + email (если задан `EMAIL_HOST_PASSWORD`) + центр уведомлений ролей, которые видят этот тип заявок.
+- **События CRM** (назначение задачи, сдача на проверку, принятие/отклонение, новая/закрытая сделка) → центр уведомлений + личный Telegram сотрудника
+  (`Profile.telegram_chat_id`, настраивается в CRM → Настройки → Уведомления: минимальный приоритет, «Не беспокоить», срочные пробивают DND).
+- Бот тот же: `@scpkg_bot`, токен — `TELEGRAM_BOT_TOKEN` в `backend/.env` (перенести из `backend-php/config.php`).
+- Нативные push (FCM/APNs) — не подключены, см. `MOBILE.md`.
 
 ---
 
-## 9. CRM — что уже сделано
+## 8. SEO / пререндеринг — без изменений
+`vite-react-ssg`, `Seo.tsx`, `public/robots.txt`, `scripts/gen-sitemap.mjs`. Перед деплоем заменить домен, добавить `og-image.png`.
 
-- **Задачи (kanban)**: 5 колонок по статусам, **drag-and-drop** между ними, воркфлоу (Новая→В работе→На проверке→Выполнена/Отклонена), отклонение с причиной, сдача с результатом+ссылкой (reels), вложения файлов, история, права по ролям.
-- **Контент-календарь**: аккаунты соцсетей, месячная сетка, посты (формат/статус), **DnD постов между днями**.
-- **SMM-дашборд** (`CrmSmm`): 3 зоны — инструменты-ссылки | TODO с табами Сегодня/Неделя/Месяц (чекбокс, цветные категории, приоритеты, просрочка, быстрое добавление, оптимистичный UI) | KPI-прогресс-бары (охваты/подписчики/ER). Настройки в drawer.
-- **Бухгалтерия** (`CrmAccounting`): Налоговый радар (ближайший дедлайн, цвет по срочности), доступы (ЭЦП с подсветкой <30 дней, ссылки СТИ/ЭСФ/ЭТТН/банк), календарный чек-лист (табы День/Месяц/Квартал/Год + селектор периода), **4-статусный воркфлоу** документов, **загрузка квитка → статус «Сдано»**, контроль первичной документации (таблица). Строгий стиль.
-- **Управление контентом сайта**: вкладка «Каталог» — CRUD карточек, публичные страницы тянут живые данные (`useContent`).
-- **Заявки**: таблицы лидов/тестов/под-ключ, ролевой доступ, раскрытие ответов теста, экспорт CSV.
-- **Идеи**, **Сотрудники**.
+---
+
+## 9. Мобильное приложение
+`frontend/capacitor.config.ts`, `npm run build:mobile` (читает `.env.mobile` с `VITE_API_URL`), `npx cap add android|ios`, `npx cap sync`.
+Подробно — `MOBILE.md`. Нужны JDK 17 (сейчас не установлен) и Xcode.
 
 ---
 
 ## 10. Правила и конвенции (СОБЛЮДАТЬ)
 
-1. **Язык интерфейса — русский.**
-2. **Иконки — только SVG** через `<Icon name="..." />`. НЕ использовать эмодзи в UI (пользователь просил строгий CRM-стиль).
-3. **Дизайн**: чистый, navy (`--color-navy #0e2a47`) + mint (`--color-mint #10b981`), белый фон. Палитра в `tokens.css`. Шрифты: Cal Sans (заголовки) + Inter.
-4. **Оптимистичный UI** для чекбоксов/тоглов (ставим локально сразу, потом API, откат при ошибке).
-5. **Адаптив админки** обязателен. Брейкпоинты в `admin.css`: 1100 / 860 / 720 / 620 px.
-   - Сайдбар → верхняя панель с прокручиваемой лентой иконок (≤860).
-   - Kanban: десктоп — грид 5 колонок (высокие); ≤1100 — горизонтальный скролл; ≤720 — вертикальный стек.
-   - Дашборды (smm/acc): 3 зоны → стек на ≤1100.
-6. **Каждую фичу проверять**: `npm run build` (типы) + `node tests/crm.e2e.mjs` (бэкенд) + визуально в браузере (preview MCP).
-7. **e2e**: добавлять тесты для новых эндпоинтов в `crm.e2e.mjs` (ловить и роли/доступы). Уникальные имена переменных (есть коллизии при copy-paste).
-8. **Новый ролевой раздел админки**: эндпоинты в `index.php` + роль-хелпер в `Crm.php` + компонент в `components/crm/` + пункт в `nav` массиве `Admin.tsx` (с `show:` по ролям) + рендер по `active === '...'` + стили в `admin.css` + e2e.
-9. **Секреты** только в `config.php` (gitignored). Никогда не коммитить.
-10. **Превью-тул**: `window.innerWidth` в iframe может «врать» (залипает) — судить о брейкпоинтах по `getComputedStyle`, а не по innerWidth. Скриншоты иногда лагают на 1 кадр — делать повторный.
+1. Язык интерфейса — русский. Иконки — только SVG `<Icon />`.
+2. Цвета только через токены `tokens.css`; тёмная тема переопределяет токены в `[data-theme="dark"]`. Новый CSS — в `crm.css`.
+   В тёмной теме `--color-navy` — светлый **цвет текста**, фон сайдбара — `--color-sidebar`.
+3. Деньги — компонент `<Money value currency compact? signed? />` (null = скрыто правами → замок).
+4. Переходы между сущностями — `useNav()(type, id)`, не прямые setState из компонентов.
+5. Оптимистичный UI для DnD и чекбоксов; автосохранение редакторов с debounce 700 мс.
+6. Адаптив обязателен: брейкпоинты 1100 / 860 / 720 / 620 (admin.css, crm.css). Проверять по `getComputedStyle`, не по `innerWidth`.
+7. Каждую фичу: `npm run build` + оба e2e + визуально. Новые эндпоинты — покрывать в `pipeline.e2e.mjs` (включая роли и 403).
+8. Секреты — только в `backend/.env` (gitignored). `backend-php/config.php` тоже не коммитить.
+9. ESLint-правило `set-state-in-effect` срабатывает на существующий паттерн загрузки данных в `useEffect` — это известный baseline, не чинить массово.
 
 ---
 
-## 11. Что делать дальше (запрошено пользователем)
-
-### A. Дашборд для МАРКЕТОЛОГА (воронки / кампании) — ✅ СДЕЛАНО
-`components/crm/CrmMarketing.tsx`. Метрики месяца (заявки/кампании/бюджет/CPL — из реальных данных),
-воронка продаж (Заявки авто → Квалификация → Консультация → Договор → Клиент с конверсиями),
-кампании CRUD (канал/бюджет/потрачено/лиды/CPL/статус), источники заявок (разбивка leads/quiz/turnkey),
-рекламные кабинеты-ссылки. Настройки воронки/бюджета/ссылок в drawer.
-
-<details><summary>Исходное ТЗ-набросок (для справки)</summary>
-По аналогии с SMM/Бухгалтерией. Идеи по содержанию (уточнить у пользователя ТЗ, как он делал для SMM/бухгалтера):
-- **Воронки продаж**: этапы (лид → квалификация → консультация → договор → оплата), конверсии между этапами, числа на каждом этапе. Можно связать с реальными заявками (`leads`, `quiz`, `turnkey`) из CRM.
-- **Кампании**: список рекламных кампаний (канал, бюджет, потрачено, лиды, CPL, ROI), статусы (план/активна/завершена).
-- **KPI маркетинга**: лиды за месяц, стоимость лида (CPL), конверсия в клиента, бюджет (план/факт) — прогресс-бары.
-- **UTM/каналы**: разбивка лидов по источникам.
-- Роль-доступ: `canMarketing` = director, manager, marketer.
-- Эндпоинты: `/api/crm/mkt/board`, `/api/crm/mkt/campaigns/save|delete`, `/api/crm/mkt/funnel` (можно считать из заявок), `/api/crm/mkt/settings`.
-- Компонент `components/crm/CrmMarketing.tsx`, пункт меню `marketing` (icon: `trending` или новый), e2e.
-- **Сначала спросить у пользователя ТЗ/пожелания** (он присылает подробные ТЗ для каждой роли).
-</details>
-
-### B. Авто-генерация бухгалтерских задач 1-го числа — ✅ СДЕЛАНО
-- Шаблоны в `scp_acc_templates()` (`backend/public/index.php`): ежемесячные (20: подоходный+соцфонд; 25: НДС, налог с продаж), квартальный (мес. 4/7/10/1, день 20), годовой (март, день 1).
-- Эндпоинт `POST /api/crm/acc/generate` `{month}` — идемпотентно (по title+deadline), `reportingPeriod` = предыдущий месяц.
-- В UI бухгалтерии — кнопка «Сгенерировать отчёты» (текущий месяц).
-- e2e: создание, идемпотентность, отказ для не-бухгалтера.
-- **Для прода (авто 1-го числа)**: добавить cron на сервере, напр.
-  `0 9 1 * * curl -s -X POST https://API/api/crm/acc/generate -H "Authorization: Bearer <сервисный токен>" -d '{}'`
-  (нужен сервисный токен/ключ; сейчас вызывается из UI вручную).
-
-### Прочие отложенные хотелки
-- **Telegram-уведомления** сотруднику при назначении задачи/поста.
-- **Email через Gmail SMTP** — ждёт App Password от пользователя.
-- **Дедлайны/приоритеты** в обычных задачах (kanban) с подсветкой просрочки.
-- **Деплой**: домен, хостинг (Vercel/Netlify для статики + PHP-хостинг для API), заменить smartcapitalpartners.kg, og-image, сменить пароли.
-- Детальные страницы франшиз/инвестиций уже есть; публичные «Контакты», блог — по желанию.
-
----
+## 11. Что дальше (по желанию пользователя)
+- Деплой: PostgreSQL, gunicorn + nginx, домен, HTTPS, сменить пароли, перенести Telegram-токен в `.env`.
+- Timeline/Gantt и календарный вид задач (бэкенд уже хранит `start_date`/`due_date`).
+- Нативные push (Firebase) — см. `MOBILE.md`.
+- Telegram-бот с командами (посмотреть задачи / сменить статус из чата).
+- Автогенерация бухгалтерских задач 1-го числа — cron: `0 9 1 * * curl -X POST https://API/api/crm/acc/generate -H "Authorization: Bearer <токен>"`.
 
 ## 12. Как продолжить в новом чате
-
-1. Открой новый чат в этой же папке проекта.
-2. Скажи ассистенту: «Прочитай `PROJECT.md` в корне и продолжаем — делаем **дашборд маркетолога** (воронки/кампании) и **авто-генерацию бухгалтерских задач 1-го числа**».
-3. Ассистент должен: поднять бэкенд (`php -S localhost:8000 -t public` в `backend`) и дев-сервер, и работать по правилам из раздела 10.
-4. Для дашборда маркетолога — сначала уточнить ТЗ у пользователя (он любит присылать подробные спецификации, как для SMM/бухгалтера).
-
-Статус: **57 e2e-тестов зелёные, сборка чистая**. Готово **4 ролевых дашборда** (Задачи/kanban, SMM, Бухгалтерия, Маркетинг) + авто-генерация бух. задач. Весь план по дашбордам выполнен.
-Дальше по желанию: Telegram-уведомления о задачах, Email SMTP (ждёт App Password), дедлайны в обычных задачах, **деплой**.
+1. Открыть чат в этой папке, сказать: «Прочитай `PROJECT.md` и продолжаем — …».
+2. Поднять Django (`backend`) и Vite (`frontend`) — есть конфиги в `.claude/launch.json`.
+3. Статус: **116 e2e зелёные, `tsc -b` чистый**. Бэкенд переведён с PHP на Django, данные импортированы, CRM получила обзор, сделки с P&L, клиентов, базу знаний, уведомления, ⌘K, права на поля, тёмную тему, Capacitor-конфиг.

@@ -14,6 +14,9 @@ const config: CapacitorConfig = {
   server: {
     // Android: https://localhost вместо http:// — иначе Secure-cookies и Service Worker не работают
     androidScheme: 'https',
+    // Отладочная сборка к локальному Django по http://<LAN-IP>:8000 — разрешаем cleartext.
+    // Для прода (API по HTTPS) переменную не задавать.
+    cleartext: process.env.CAP_CLEARTEXT === '1',
   },
   ios: {
     contentInset: 'automatic',

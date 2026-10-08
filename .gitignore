@@ -15,3 +15,6 @@ frontend/dist/
 
 # Backend secrets
 backend/config.php
+
+# Старый PHP-бэкенд (только для импорта) — секреты
+backend-php/config.php
