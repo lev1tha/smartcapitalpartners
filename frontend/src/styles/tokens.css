@@ -92,3 +92,71 @@ h3 {
   letter-spacing: -1px;
   margin: 0;
 }
+
+/* ===== Цветовые чипы статусов (светлая тема) ===== */
+:root {
+  --chip-info-bg: #dbeafe; --chip-info-fg: #1e40af;
+  --chip-warn-bg: #fef3c7; --chip-warn-fg: #92400e;
+  --chip-ok-bg: #d1fae5;   --chip-ok-fg: #047857;
+  --chip-err-bg: #fee2e2;  --chip-err-fg: #b91c1c;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(14, 42, 71, 0.1);
+  --shadow-lg: 0 24px 60px -28px rgba(14, 42, 71, 0.35);
+  --accent-glow: rgba(82, 138, 235, 0.18);
+}
+
+/* ===== Тёмная тема CRM =====
+   Глубокий navy вместо чёрного — продолжение бренда (#001E52), не «dark mode по умолчанию».
+   Переопределяем только токены: admin.css и crm.css сами подхватывают цвета. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-primary: #e8edf6;
+  --color-primary-active: #ffffff;
+  --color-primary-disabled: #2a3650;
+  --color-ink: #e8edf6;
+  --color-body: #c3cbd9;
+  --color-muted: #8a97ad;
+  --color-muted-soft: #6b7890;
+  --color-hairline: rgba(148, 163, 184, 0.16);
+  --color-hairline-soft: rgba(148, 163, 184, 0.09);
+  --color-canvas: #0e1526;
+  --color-surface-soft: #0a1020;
+  --color-surface-card: #121a2e;
+  --color-surface-strong: #1b2540;
+  --color-on-primary: #0a1020;
+  --color-navy: #a9c1f3;        /* в светлой теме navy — текст/ссылки; тут — светло-синий текст */
+  --color-navy-deep: #070b14;
+  --color-navy-soft: #16213d;
+  --color-sidebar: #0b1328;
+  --color-mint: #6b9cf2;
+  --color-mint-bright: #8fb4f6;
+  --color-mint-soft: rgba(82, 138, 235, 0.16);
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+  --chip-info-bg: rgba(96, 165, 250, 0.18); --chip-info-fg: #93c5fd;
+  --chip-warn-bg: rgba(251, 191, 36, 0.16); --chip-warn-fg: #fcd34d;
+  --chip-ok-bg: rgba(52, 211, 153, 0.16);   --chip-ok-fg: #6ee7b7;
+  --chip-err-bg: rgba(248, 113, 113, 0.16); --chip-err-fg: #fca5a5;
+  --glass-bg: rgba(14, 21, 38, 0.66);
+  --glass-border: rgba(148, 163, 184, 0.14);
+  --shadow-lg: 0 30px 80px -30px rgba(0, 0, 0, 0.7);
+  --accent-glow: rgba(107, 156, 242, 0.22);
+}
+[data-theme="dark"] .admin-side__link.is-active { color: #0a1020; }
+[data-theme="dark"] .admin-input { background: var(--color-surface-card); color: var(--color-ink); }
+[data-theme="dark"] .admin-input::placeholder { color: var(--color-muted-soft); }
+[data-theme="dark"] .admin-btn { color: var(--color-on-primary); }
+[data-theme="dark"] .admin-btn--ghost { color: var(--color-ink); }
+[data-theme="dark"] .admin-btn--danger { background: rgba(248, 113, 113, 0.16); color: #fca5a5; }
+[data-theme="dark"] .admin-side { background: var(--color-sidebar); border-right: 1px solid var(--color-hairline-soft); }
+[data-theme="dark"] .admin-side__link.is-active { background: var(--color-mint); }
+/* В старых разделах navy использовался как фон кнопок/чипов — в тёмной теме заменяем на акцент. */
+[data-theme="dark"] .crm-chip.is-active,
+[data-theme="dark"] .smm-tab.is-active,
+[data-theme="dark"] .acc-gen-btn { background: var(--color-mint); border-color: var(--color-mint); color: #0a1020; }
+[data-theme="dark"] .acc-gen-btn:hover { background: var(--color-mint-bright); }
+[data-theme="dark"] .admin-btn--mint, [data-theme="dark"] .admin-side__link.is-active { color: #0a1020; }
+[data-theme="dark"] .admin-tab.is-active { background: var(--color-mint); border-color: var(--color-mint); color: #0a1020; }
+[data-theme="dark"] .funnel-bar__fill { background: linear-gradient(90deg, var(--color-mint), var(--color-mint-bright)); color: #0a1020; }
+[data-theme="dark"] .mkt-src__bar > div { background: var(--color-mint); }
