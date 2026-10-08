@@ -9,7 +9,8 @@ PostgreSQL 16 (apt), база scp
 www.kpioshsu.com ─301─> kpioshsu.com
 ```
 
-Все команды — на сервере от root. Перед началом: A-записи `@` и `www` домена kpioshsu.com → IP сервера
+Все команды — на сервере от root **в bash** (у root по умолчанию fish: сначала выполните `bash`,
+иначе не сработают `VAR=$(...)`, `set -a; . ./.env` и циклы `for ... do`). Перед началом: A-записи `@` и `www` домена kpioshsu.com → IP сервера
 (проверка: `dig +short kpioshsu.com`).
 
 ## 0. Погасить старый проект qrcard
@@ -25,8 +26,7 @@ systemctl list-units --type=service | grep -i qrcard
 
 # бэкап базы qrcard (на всякий случай)
 cd /srv/qrcard/backend
-set -a; . ./.env; set +a
-docker compose exec -T db pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB" > /root/qrcard_backup_$(date +%F).sql
+docker compose exec -T db sh -c 'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' > /root/qrcard_backup_$(date +%F).sql
 ls -lh /root/qrcard_backup_*.sql            # файл не пустой
 
 # остановить
