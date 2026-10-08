@@ -10,7 +10,8 @@ from ..utils import ApiError, s
 
 
 def _client_ip(request):
-    return request.META.get('REMOTE_ADDR') or None
+    # За nginx REMOTE_ADDR = 127.0.0.1; настоящий адрес nginx кладёт в X-Real-IP.
+    return request.META.get('HTTP_X_REAL_IP') or request.META.get('REMOTE_ADDR') or None
 
 
 def _json_object(request) -> dict:

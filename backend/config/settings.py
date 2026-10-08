@@ -121,6 +121,8 @@ CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS', 'http://localhost:5173')
     'capacitor://localhost',
 ]
 CORS_ALLOW_HEADERS = ['authorization', 'content-type']
+# Django-admin по HTTPS за nginx: https://домен должен быть в списке.
+CSRF_TRUSTED_ORIGINS = env_list('CSRF_TRUSTED_ORIGINS')
 
 # --- Уведомления ---
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '')

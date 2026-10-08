@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://smartcapitalpartners.kg/sitemap.xml
+Sitemap: https://kpioshsu.com/sitemap.xml

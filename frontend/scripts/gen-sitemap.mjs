@@ -2,7 +2,7 @@
 // Запуск: node scripts/gen-sitemap.mjs  (также вызывается в npm run build)
 import { readFileSync, writeFileSync } from 'node:fs'
 
-const SITE = 'https://smartcapitalpartners.kg'
+const SITE = 'https://kpioshsu.com'
 
 // Достаём id из конкретного массива внутри файла (между `const <name>...[` и `]`),
 // чтобы не зацепить посторонние id (например, InvestmentBucket).

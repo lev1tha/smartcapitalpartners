@@ -1,7 +1,7 @@
 import { Head } from 'vite-react-ssg'
 
 // При деплое замените SITE_URL на реальный домен.
-export const SITE_URL = 'https://smartcapitalpartners.kg'
+export const SITE_URL = 'https://kpioshsu.com'
 export const BRAND = 'Smart Capital Partners'
 
 type SeoProps = {

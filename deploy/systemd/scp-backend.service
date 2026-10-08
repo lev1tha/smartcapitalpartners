@@ -1,0 +1,19 @@
+[Unit]
+Description=Smart Capital Partners API (gunicorn)
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/scp/backend
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/srv/scp/backend/.venv/bin/gunicorn config.wsgi:application \
+    --bind 127.0.0.1:8000 --workers 3 --timeout 60 \
+    --access-logfile - --error-logfile -
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
