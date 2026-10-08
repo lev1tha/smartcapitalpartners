@@ -9,6 +9,9 @@ User=www-data
 Group=www-data
 WorkingDirectory=/srv/scp/backend
 Environment=PYTHONUNBUFFERED=1
+# Gunicorn 26 создаёт служебный сокет в $HOME (~/.gunicorn); /var/www у www-data недоступен на запись.
+RuntimeDirectory=scp-backend
+Environment=HOME=/run/scp-backend
 ExecStart=/srv/scp/backend/.venv/bin/gunicorn config.wsgi:application \
     --bind 127.0.0.1:8000 --workers 3 --timeout 60 \
     --access-logfile - --error-logfile -

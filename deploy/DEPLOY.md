@@ -119,6 +119,7 @@ npm run build                                # → dist/
 ```bash
 cp /srv/scp/deploy/nginx/scp.conf /etc/nginx/sites-available/scp.conf
 ln -s /etc/nginx/sites-available/scp.conf /etc/nginx/sites-enabled/
+cp /srv/scp/deploy/nginx/cloudflare-realip.conf /etc/nginx/conf.d/   # домен проксируется через Cloudflare
 nginx -t && systemctl reload nginx
 certbot --nginx -d kpioshsu.com -d www.kpioshsu.com -m <email> --agree-tos --redirect -n
 ```
