@@ -3,7 +3,7 @@ Smart Notification Center: доставка уведомлений по кана
 
   web       — запись в таблицу Notification (центр уведомлений в CRM), всегда;
   telegram  — личный chat_id сотрудника, с учётом приоритета и «Не беспокоить»;
-  email/tg  — заявки с сайта, как в старом PHP Notifier (директору).
+  email/tg  — заявки с сайта (директору).
 
 Внешние каналы отправляются после коммита транзакции и в фоновом потоке,
 чтобы медленный Telegram не задерживал ответ API.
@@ -141,7 +141,7 @@ def users_with_roles(*roles: str):
 
 
 def notify_site_submission(subject: str, text: str) -> dict:
-    """Заявка с сайта: email + Telegram директору (как PHP Notifier::send)."""
+    """Заявка с сайта: email + Telegram директору."""
     result = {'email': False, 'telegram': False}
 
     def go():

@@ -24,7 +24,7 @@ class ApiError(exceptions.APIException):
 
 
 def exception_handler(exc, context):
-    """Все ошибки API — в том же формате, что отдавал PHP: {"error": "..."}."""
+    """Все ошибки API — в едином формате {"error": "..."}."""
     if isinstance(exc, ApiError):
         return Response({'error': exc.message}, status=exc.status_code)
     if isinstance(exc, exceptions.ParseError):
@@ -54,12 +54,12 @@ def json_not_found(request, exception=None):
 
 
 def new_id(prefix: str) -> str:
-    """Короткий id с префиксом, как у PHP Store::id(): task_3f9a1c0b2d."""
+    """Короткий id с префиксом: task_3f9a1c0b2d."""
     return prefix + secrets.token_hex(5)
 
 
 def iso(dt: datetime | None) -> str:
-    """Дата-время в формате PHP DATE_ATOM в часовом поясе проекта."""
+    """Дата-время в формате ISO 8601 (DATE_ATOM) в часовом поясе проекта."""
     if dt is None:
         return ''
     return timezone.localtime(dt).isoformat(timespec='seconds')
@@ -70,7 +70,7 @@ def iso_date(d: date | None) -> str:
 
 
 def body(request) -> dict[str, Any]:
-    """Тело запроса как dict (не-объект JSON → пустой dict, как в PHP)."""
+    """Тело запроса как dict (не-объект JSON → пустой dict)."""
     data = request.data
     return data if isinstance(data, dict) else {}
 
@@ -81,7 +81,7 @@ def item_of(request) -> dict[str, Any] | None:
 
 
 def s(value: Any) -> str:
-    """Аналог (string)$x в PHP + trim."""
+    """Строка из любого значения + trim."""
     if value is None:
         return ''
     if isinstance(value, bool):

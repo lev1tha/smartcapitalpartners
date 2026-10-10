@@ -94,7 +94,7 @@ chmod 600 .env
 .venv/bin/python manage.py migrate
 .venv/bin/python manage.py collectstatic --noinput
 .venv/bin/python manage.py seed_users
-.venv/bin/python manage.py import_legacy ../backend-php   # только если нужны старые данные
+.venv/bin/python manage.py import_legacy   # начальные данные (каталог, заявки) из backend/legacy
 for u in director manager marketer smm accountant finance; do .venv/bin/python manage.py changepassword $u; done
 .venv/bin/python manage.py check --deploy
 

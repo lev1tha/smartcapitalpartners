@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // Все запросы /api/* уходят на PHP-бэкенд (php -S localhost:8000)
+      // Все запросы /api/* уходят на Django (manage.py runserver 8000)
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true,

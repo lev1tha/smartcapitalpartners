@@ -93,7 +93,7 @@ def content_save(request):
             obj.data = payload
             obj.save(update_fields=['data'])
         else:
-            # новые карточки — в начало списка, как в PHP
+            # новые карточки — в начало списка
             first = ContentItem.objects.filter(type=ctype).aggregate(m=Min('position'))['m']
             obj = ContentItem(type=ctype, data=payload, position=(first or 0) - 1)
             if item_id:

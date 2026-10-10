@@ -90,13 +90,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Вложения задач и квитки. URL совпадает со старым PHP (/uploads/...),
+# Вложения задач и квитки. URL — /uploads/... (как в перенесённых данных),
 # поэтому ссылки из перенесённых данных продолжают работать.
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = BASE_DIR / 'uploads'
 UPLOAD_MAX_BYTES = 15 * 1024 * 1024
 
-# API не использует trailing slash — как и старый PHP-роутер.
+# API не использует trailing slash.
 APPEND_SLASH = False
 
 REST_FRAMEWORK = {

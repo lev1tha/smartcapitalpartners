@@ -39,7 +39,8 @@ export default function CrmUsers() {
         </tbody>
       </table>
       <p className="admin-note" style={{ padding: '12px 16px' }}>
-        Управление сотрудниками (добавление/смена паролей) — в файле <code>backend/config.php</code>.
+        Добавление сотрудников и смена паролей — в Django-admin (<code>/django-admin/</code>) или командой{' '}
+        <code>manage.py changepassword &lt;логин&gt;</code>.
       </p>
     </div>
   )

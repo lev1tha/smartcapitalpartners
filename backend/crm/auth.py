@@ -1,7 +1,7 @@
 """
 Аутентификация по заголовку `Authorization: Bearer <token>`.
 
-В отличие от PHP-токена (login.hmac, бессрочный), токен хранится в БД:
+Токен хранится в БД:
 его можно отозвать (выход, смена пароля), и он истекает через AUTH_TOKEN_TTL_DAYS.
 """
 from datetime import timedelta

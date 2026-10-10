@@ -1,5 +1,5 @@
 """
-Задачи (kanban + doc-view). Воркфлоу 1-в-1 с PHP Crm::transition:
+Задачи (kanban + doc-view). Воркфлоу переходов:
   new/rejected → start → in_progress → submit → review → approve → done
                                                review → reject (причина) → rejected
 """

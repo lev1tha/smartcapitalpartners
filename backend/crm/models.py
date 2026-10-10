@@ -1,7 +1,7 @@
 """
 Схема данных CRM Smart Capital Partners.
 
-Модели первой части повторяют структуры из старого JSON-хранилища PHP
+Модели первой части повторяют структуры прежнего JSON-хранилища
 (storage/*.json) — id сохраняются при импорте, поэтому ссылки не ломаются.
 Вторая часть — новые модули: клиенты, сделки и финансы, документы,
 уведомления, журнал действий, права на поля и пользовательские свойства.
@@ -245,7 +245,7 @@ class Task(models.Model):
     id = models.CharField(primary_key=True, max_length=40, default=_task_id)
     title = models.CharField(max_length=300)
     description = models.TextField(blank=True)
-    # Исполнитель — роль (как в PHP): задачу видят все сотрудники этой роли.
+    # Исполнитель — роль: задачу видят все сотрудники этой роли.
     assignee = models.CharField(max_length=20, blank=True, db_index=True)
     start_date = models.DateField(null=True, blank=True)
     due_date = models.DateField(null=True, blank=True)
@@ -275,7 +275,7 @@ class Task(models.Model):
 
 
 class TaskEvent(models.Model):
-    """История задачи (в PHP — массив history внутри задачи)."""
+    """История задачи (ранее — массив history внутри задачи)."""
 
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='events')
     at = models.DateTimeField(default=timezone.now)

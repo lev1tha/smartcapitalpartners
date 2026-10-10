@@ -13,8 +13,3 @@ frontend/dist/
 .DS_Store
 *.log
 
-# Backend secrets
-backend/config.php
-
-# Старый PHP-бэкенд (только для импорта) — секреты
-backend-php/config.php

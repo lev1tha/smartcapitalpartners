@@ -30,7 +30,7 @@
 | Backend | `backend/` — **Django 5.2 + DRF**, Python 3.12 (`backend/.venv`) |
 | База | SQLite в dev (`backend/db.sqlite3`), PostgreSQL в проде (`DATABASE_URL`); PostgreSQL 16 установлен локально через brew |
 | Файлы | `backend/uploads/` (URL `/uploads/…`, как раньше) |
-| Legacy | `backend-php/` — старый PHP-бэкенд. Не запускается. Нужен только для `import_legacy` |
+| Начальные данные | `backend/legacy/{content,storage}/*.json` — каталог сайта и данные CRM, загружаются `import_legacy` |
 | Node | v24 |
 
 ### Запуск (2 терминала или `.claude/launch.json`: `backend` + `frontend`)
@@ -125,14 +125,15 @@ backend/
 │   ├── views/crm.py          # клиенты, сделки, платежи, дашборд
 │   ├── views/workspace.py    # документы, уведомления, поиск, журнал, права, свойства
 │   ├── urls.py               # все пути — без завершающего слэша
-│   └── management/commands/  # seed_users [--from-php], import_legacy <backend-php>
+│   └── management/commands/  # seed_users, import_legacy [root]
+├── legacy/{content,storage}/ # начальные данные (JSON) для import_legacy
 ├── uploads/                  # файлы (gitignored)
 └── tests/crm.e2e.mjs, tests/pipeline.e2e.mjs
 ```
 
 ### Конвенции Python
-- Ответ ошибки всегда `{"error": "…"}` (`ApiError(message, code)`), коды как в PHP: 401/403/404/422.
-- Вьюхи — `@api_view` + `@require(check, message, anon_status)`; `anon_status=403` там, где PHP отвечал анониму 403.
+- Ответ ошибки всегда `{"error": "…"}` (`ApiError(message, code)`), коды: 401/403/404/422.
+- Вьюхи — `@api_view` + `@require(check, message, anon_status)`; `anon_status=403` там, где анониму нужен 403.
 - JSON-ключи ответов — camelCase (см. `presenters.py`), фронт не менялся для старых разделов.
 - Финансовые поля в ответах — через `field_access(request)`; перед записью — `fa.assert_editable(...)`.
 - Изменения клиентов/сделок/платежей/задач пишутся в `AuditLog` (`audit.record`).
@@ -166,7 +167,7 @@ backend/
 - **Заявки с сайта** → Telegram директору (`TELEGRAM_LEADS_CHAT_ID`) + email (если задан `EMAIL_HOST_PASSWORD`) + центр уведомлений ролей, которые видят этот тип заявок.
 - **События CRM** (назначение задачи, сдача на проверку, принятие/отклонение, новая/закрытая сделка) → центр уведомлений + личный Telegram сотрудника
   (`Profile.telegram_chat_id`, настраивается в CRM → Настройки → Уведомления: минимальный приоритет, «Не беспокоить», срочные пробивают DND).
-- Бот тот же: `@scpkg_bot`, токен — `TELEGRAM_BOT_TOKEN` в `backend/.env` (перенести из `backend-php/config.php`).
+- Бот: `@scpkg_bot`, токен — `TELEGRAM_BOT_TOKEN` в `backend/.env`.
 - Нативные push (FCM/APNs) — не подключены, см. `MOBILE.md`.
 
 ---
@@ -192,13 +193,13 @@ backend/
 5. Оптимистичный UI для DnD и чекбоксов; автосохранение редакторов с debounce 700 мс.
 6. Адаптив обязателен: брейкпоинты 1100 / 860 / 720 / 620 (admin.css, crm.css). Проверять по `getComputedStyle`, не по `innerWidth`.
 7. Каждую фичу: `npm run build` + оба e2e + визуально. Новые эндпоинты — покрывать в `pipeline.e2e.mjs` (включая роли и 403).
-8. Секреты — только в `backend/.env` (gitignored). `backend-php/config.php` тоже не коммитить.
+8. Секреты — только в `backend/.env` (gitignored).
 9. ESLint-правило `set-state-in-effect` срабатывает на существующий паттерн загрузки данных в `useEffect` — это известный baseline, не чинить массово.
 
 ---
 
 ## 11. Что дальше (по желанию пользователя)
-- Деплой: PostgreSQL, gunicorn + nginx, домен, HTTPS, сменить пароли, перенести Telegram-токен в `.env`.
+- Деплой сделан (см. `deploy/DEPLOY.md`, домен kpioshsu.com). Осталось: нативные push, Gantt.
 - Timeline/Gantt и календарный вид задач (бэкенд уже хранит `start_date`/`due_date`).
 - Нативные push (Firebase) — см. `MOBILE.md`.
 - Telegram-бот с командами (посмотреть задачи / сменить статус из чата).
@@ -207,4 +208,4 @@ backend/
 ## 12. Как продолжить в новом чате
 1. Открыть чат в этой папке, сказать: «Прочитай `PROJECT.md` и продолжаем — …».
 2. Поднять Django (`backend`) и Vite (`frontend`) — есть конфиги в `.claude/launch.json`.
-3. Статус: **116 e2e зелёные, `tsc -b` чистый**. Бэкенд переведён с PHP на Django, данные импортированы, CRM получила обзор, сделки с P&L, клиентов, базу знаний, уведомления, ⌘K, права на поля, тёмную тему, Capacitor-конфиг.
+3. Статус: **116 e2e зелёные, `tsc -b` чистый**. Бэкенд — только Django (PHP удалён, начальные данные в `backend/legacy/`), CRM получила обзор, сделки с P&L, клиентов, базу знаний, уведомления, ⌘K, права на поля, тёмную тему, Capacitor-конфиг.

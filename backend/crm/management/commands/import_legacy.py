@@ -1,11 +1,12 @@
 """
-Перенос данных из JSON-хранилища PHP (backend-php/storage, backend-php/content).
+Начальные данные CRM и сайта из JSON (backend/legacy/{content,storage}).
 
-  python manage.py import_legacy ../backend-php
+  python manage.py import_legacy              # из backend/legacy
+  python manage.py import_legacy /path/root   # из другой папки с content/ и storage/
 
 Идемпотентно: записи с существующим id обновляются, без id (заявки) —
-пропускаются при совпадении createdAt+phone. Файлы из public/uploads копируются
-в MEDIA_ROOT, ссылки /uploads/... остаются прежними.
+пропускаются при совпадении createdAt+phone. Файлы из <root>/uploads
+копируются в MEDIA_ROOT, ссылки /uploads/... остаются прежними.
 """
 import json
 import shutil
@@ -52,10 +53,11 @@ def _dec(value) -> Decimal:
 
 
 class Command(BaseCommand):
-    help = 'Импорт данных из backend-php/{storage,content,public/uploads}'
+    help = 'Импорт начальных данных из JSON (backend/legacy по умолчанию)'
 
     def add_arguments(self, parser):
-        parser.add_argument('php_root', help='путь к папке backend-php')
+        parser.add_argument('root', nargs='?', default=str(settings.BASE_DIR / 'legacy'),
+                            help='папка с content/ и storage/ (по умолчанию backend/legacy)')
 
     def _load(self, name: str, folder: str = 'storage'):
         path = self.root / folder / name
@@ -66,7 +68,7 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **opts):
-        self.root = Path(opts['php_root'])
+        self.root = Path(opts['root'])
         if not (self.root / 'storage').is_dir():
             raise CommandError(f'{self.root}/storage не найден')
         users = {u.username: u for u in User.objects.filter(profile__isnull=False).select_related('profile')}
@@ -198,7 +200,7 @@ class Command(BaseCommand):
                 m.BoardSettings.objects.update_or_create(pk=key, defaults={'data': data})
 
         # --- файлы ---
-        src = self.root / 'public' / 'uploads'
+        src = self.root / 'uploads'
         if src.is_dir():
             Path(settings.MEDIA_ROOT).mkdir(parents=True, exist_ok=True)
             for f in src.iterdir():

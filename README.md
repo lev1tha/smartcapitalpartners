@@ -19,8 +19,8 @@ SmartCapitalPartners/
 │   ├── crm/permissions.py             # матрица прав на поля (видимость финансов и контактов)
 │   ├── crm/views/                     # эндпоинты по модулям
 │   ├── crm/management/commands/       # seed_users, import_legacy
+│   ├── legacy/{content,storage}/      # начальные данные сайта и CRM (JSON) для import_legacy
 │   └── tests/*.e2e.mjs                # e2e через HTTP (116 проверок)
-├── backend-php/           # прежний PHP-бэкенд (только для импорта данных, не запускается)
 ├── MOBILE.md              # сборка APK / TestFlight
 └── PROJECT.md             # контекст проекта для продолжения работы
 ```
@@ -35,7 +35,7 @@ python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
 cp .env.example .env                       # заполнить секреты (Telegram, SMTP, DATABASE_URL)
 .venv/bin/python manage.py migrate
 .venv/bin/python manage.py seed_users      # 6 сотрудников с паролями по умолчанию (сменить!)
-.venv/bin/python manage.py import_legacy ../backend-php   # перенос данных из JSON (один раз)
+.venv/bin/python manage.py import_legacy   # начальные данные из backend/legacy (один раз)
 .venv/bin/python manage.py runserver 8000
 ```
 

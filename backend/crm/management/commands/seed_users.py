@@ -1,15 +1,11 @@
 """
 Создаёт/обновляет сотрудников CRM.
 
-  python manage.py seed_users                      # 6 ролей с паролями по умолчанию (dev)
-  python manage.py seed_users --from-php ../backend-php/config.php   # логины/пароли из старого конфига
+  python manage.py seed_users      # 6 ролей с паролями по умолчанию (dev)
 
-Пароли по умолчанию такие же, как были в PHP (login + '123'). Перед публикацией
+Пароли по умолчанию — login + '123'. Перед публикацией
 смените их: python manage.py changepassword <login>.
 """
-import re
-from pathlib import Path
-
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
@@ -27,23 +23,11 @@ DEFAULT_USERS = [
     ('finance', 'finance123', 'Финансист', 'finance'),
 ]
 
-_PHP_USER = re.compile(
-    r"\['login'\s*=>\s*'([^']*)',\s*'password'\s*=>\s*'([^']*)',\s*'name'\s*=>\s*'([^']*)',\s*'role'\s*=>\s*'([^']*)'\]"
-)
-
-
 class Command(BaseCommand):
     help = 'Создать сотрудников CRM (роли из crm/roles.py)'
 
-    def add_arguments(self, parser):
-        parser.add_argument('--from-php', help='путь к backend-php/config.php с массивом users')
-
     def handle(self, *args, **opts):
-        users = DEFAULT_USERS
-        if opts['from_php']:
-            text = Path(opts['from_php']).read_text(encoding='utf-8')
-            users = _PHP_USER.findall(text) or users
-        for login, password, name, role in users:
+        for login, password, name, role in DEFAULT_USERS:
             if role not in ROLES:
                 self.stderr.write(f'  пропуск {login}: неизвестная роль {role}')
                 continue
