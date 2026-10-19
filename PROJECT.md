@@ -1,6 +1,7 @@
 # Smart Capital Partners — контекст проекта (handoff для нового чата)
 
 > Прочитай этот файл целиком перед продолжением работы.
+> Для Gemini CLI краткая выжимка правил — в [`GEMINI.md`](GEMINI.md); для деплоя — [`deploy/DEPLOY.md`](deploy/DEPLOY.md).
 > Проект ведётся итеративно, по-русски, аккуратно: каждая фича проверяется сборкой + e2e + визуально в браузере.
 
 ---
@@ -23,7 +24,7 @@
 
 | | |
 |---|---|
-| Корень | `/Users/ashimovace/Desktop/projects/MFPro` |
+| Репозиторий | `github.com/lev1tha/smartcapitalpartners`, ветка `master` |
 | Frontend | `frontend/` — React **19.2** + Vite **8** + TypeScript, `framer-motion` 14, Capacitor 8 |
 | Роутинг | `react-router-dom` **6.30** (НЕ v7 — ради SSG) |
 | SSG/SEO | `vite-react-ssg` 0.9.1-beta — пререндер публичных маршрутов |
@@ -31,7 +32,8 @@
 | База | SQLite в dev (`backend/db.sqlite3`), PostgreSQL в проде (`DATABASE_URL`); PostgreSQL 16 установлен локально через brew |
 | Файлы | `backend/uploads/` (URL `/uploads/…`, как раньше) |
 | Legacy | `backend-php/` — старый PHP-бэкенд. Не запускается. Нужен только для `import_legacy` |
-| Node | v24 |
+| Node | v24 локально, на сервере ≥ 20.19 (требование Vite 8) |
+| Прод | https://kpioshsu.com (VPS, nginx + gunicorn + PostgreSQL 16, Cloudflare) — см. `deploy/` |
 
 ### Запуск (2 терминала или `.claude/launch.json`: `backend` + `frontend`)
 ```bash
@@ -171,14 +173,32 @@ backend/
 
 ---
 
-## 8. SEO / пререндеринг — без изменений
-`vite-react-ssg`, `Seo.tsx`, `public/robots.txt`, `scripts/gen-sitemap.mjs`. Перед деплоем заменить домен, добавить `og-image.png`.
+## 8. SEO / пререндеринг
+`vite-react-ssg`, `Seo.tsx`, `public/robots.txt`, `scripts/gen-sitemap.mjs` (запускается в `npm run build`).
+Домен — **`https://kpioshsu.com`**: задан в `Seo.tsx` (`SITE_URL`), `scripts/gen-sitemap.mjs` (`SITE`) и `public/robots.txt` — менять во всех трёх местах. `public/og-image.png` на месте.
 
 ---
 
 ## 9. Мобильное приложение
 `frontend/capacitor.config.ts`, `npm run build:mobile` (читает `.env.mobile` с `VITE_API_URL`), `npx cap add android|ios`, `npx cap sync`.
-Подробно — `MOBILE.md`. Нужны JDK 17 (сейчас не установлен) и Xcode.
+Подробно — `MOBILE.md`. Нужны **JDK 21** (`brew install openjdk@21`, установлен) и Xcode. Нативный Android-проект — `frontend/android/` (в git), debug APK собирается `./gradlew assembleDebug`.
+По умолчанию `.env.mobile.example` указывает API на `https://kpioshsu.com`.
+
+---
+
+## 9a. Продакшен / деплой
+
+Сайт и API живут на одном VPS под **kpioshsu.com** (за Cloudflare). Пошаговая инструкция — [`deploy/DEPLOY.md`](deploy/DEPLOY.md).
+
+| Файл | Назначение |
+|---|---|
+| `deploy/nginx/scp.conf` | `/` → `frontend/dist`, `/api` и `/django-admin` → gunicorn `127.0.0.1:8000`, `/static/`, `/uploads/`; `www` → 301 |
+| `deploy/nginx/cloudflare-realip.conf` | в `/etc/nginx/conf.d/` — настоящий IP посетителя из `CF-Connecting-IP` |
+| `deploy/systemd/scp-backend.service` | gunicorn (3 воркера) от `www-data`, `HOME=/run/scp-backend` (нужно gunicorn 26) |
+
+- Код на сервере — `/srv/scp`, база PostgreSQL `scp`, секреты в `/srv/scp/backend/.env` (`chmod 600`).
+- IP заявок берётся из `X-Real-IP` (`views/public.py`), для django-admin по HTTPS нужен `CSRF_TRUSTED_ORIGINS`.
+- Обновление: `git pull` → `pip install` + `migrate` + `collectstatic` → `systemctl restart scp-backend` → `npm ci && npm run build`.
 
 ---
 
@@ -198,13 +218,14 @@ backend/
 ---
 
 ## 11. Что дальше (по желанию пользователя)
-- Деплой: PostgreSQL, gunicorn + nginx, домен, HTTPS, сменить пароли, перенести Telegram-токен в `.env`.
+- ~~Деплой~~ — сделан (kpioshsu.com, см. `deploy/`). Осталось: убедиться, что пароли сотрудников сменены и Telegram-токен перенесён в `.env` на сервере.
 - Timeline/Gantt и календарный вид задач (бэкенд уже хранит `start_date`/`due_date`).
 - Нативные push (Firebase) — см. `MOBILE.md`.
 - Telegram-бот с командами (посмотреть задачи / сменить статус из чата).
-- Автогенерация бухгалтерских задач 1-го числа — cron: `0 9 1 * * curl -X POST https://API/api/crm/acc/generate -H "Authorization: Bearer <токен>"`.
+- Автогенерация бухгалтерских задач 1-го числа: cron с токеном не годится (токен живёт 30 дней) — лучше management-команда + cron на сервере.
+  Пока — кнопка «Сгенерировать» в разделе «Бухгалтерия» (`POST /api/crm/acc/generate`).
 
 ## 12. Как продолжить в новом чате
-1. Открыть чат в этой папке, сказать: «Прочитай `PROJECT.md` и продолжаем — …».
+1. Открыть чат в этой папке, сказать: «Прочитай `PROJECT.md` и продолжаем — …» (Claude Code / Gemini CLI — `GEMINI.md` подхватывается автоматически).
 2. Поднять Django (`backend`) и Vite (`frontend`) — есть конфиги в `.claude/launch.json`.
-3. Статус: **116 e2e зелёные, `tsc -b` чистый**. Бэкенд переведён с PHP на Django, данные импортированы, CRM получила обзор, сделки с P&L, клиентов, базу знаний, уведомления, ⌘K, права на поля, тёмную тему, Capacitor-конфиг.
+3. Статус: **116 e2e-проверок (57 + 59), `tsc -b` чистый**, прод развёрнут на kpioshsu.com. Бэкенд переведён с PHP на Django, данные импортированы, CRM получила обзор, сделки с P&L, клиентов, базу знаний, уведомления, ⌘K, права на поля, тёмную тему, Capacitor-конфиг.

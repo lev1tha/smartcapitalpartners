@@ -3,6 +3,8 @@
 Фуллстек-проект: **React + Vite** (сайт + CRM) и **Django + DRF** (API).
 Дизайн-система — Cal.com-style ([frontend/DESIGN.md](frontend/DESIGN.md)); у CRM есть тёмная и светлая темы.
 
+Прод: **https://kpioshsu.com** (CRM — `/admin`).
+
 ## Структура
 
 ```
@@ -21,8 +23,10 @@ SmartCapitalPartners/
 │   ├── crm/management/commands/       # seed_users, import_legacy
 │   └── tests/*.e2e.mjs                # e2e через HTTP (116 проверок)
 ├── backend-php/           # прежний PHP-бэкенд (только для импорта данных, не запускается)
+├── deploy/                # nginx, systemd, DEPLOY.md — продакшен на VPS
 ├── MOBILE.md              # сборка APK / TestFlight
-└── PROJECT.md             # контекст проекта для продолжения работы
+├── PROJECT.md             # контекст проекта для продолжения работы
+└── GEMINI.md              # инструкции для Gemini CLI (правила, команды, конвенции)
 ```
 
 ## Запуск
@@ -66,7 +70,20 @@ cd backend && node tests/pipeline.e2e.mjs # клиенты, сделки, пра
 
 ## Продакшен
 
-- `DJANGO_DEBUG=0`, `DJANGO_SECRET_KEY`, `DATABASE_URL=postgres://…`, `DJANGO_ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS`.
-- `gunicorn config.wsgi` за nginx; nginx отдаёт `backend/uploads/` по `/uploads/` и `frontend/dist/` как статику.
-- `python manage.py collectstatic` для Django-admin (`/django-admin/`).
-- Сменить пароли: `python manage.py changepassword <login>`.
+Развёрнут на VPS под **kpioshsu.com** (nginx + gunicorn + PostgreSQL 16, домен за Cloudflare).
+Пошагово, включая обновление и бэкап, — [deploy/DEPLOY.md](deploy/DEPLOY.md).
+
+- `backend/.env`: `DJANGO_DEBUG=0`, `DJANGO_SECRET_KEY`, `DATABASE_URL=postgres://…`, `DJANGO_ALLOWED_HOSTS`,
+  `CORS_ALLOWED_ORIGINS`, `CSRF_TRUSTED_ORIGINS` (для `/django-admin/` по HTTPS), Telegram и SMTP.
+- `gunicorn config.wsgi` (systemd `scp-backend`) за nginx; nginx отдаёт `frontend/dist/`, `/static/` и `/uploads/`.
+- Сменить пароли сотрудников: `python manage.py changepassword <login>`.
+
+## Документация
+
+| Файл | О чём |
+|---|---|
+| [PROJECT.md](PROJECT.md) | полный контекст: роли, API, модели, конвенции, что дальше |
+| [GEMINI.md](GEMINI.md) | контекст для Gemini CLI |
+| [MOBILE.md](MOBILE.md) | Capacitor, APK, TestFlight |
+| [deploy/DEPLOY.md](deploy/DEPLOY.md) | деплой на VPS |
+| [frontend/DESIGN.md](frontend/DESIGN.md) | дизайн-токены и компоненты |
